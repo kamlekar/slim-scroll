@@ -2,25 +2,29 @@ var ScrollBar = Class.create();
 ScrollBar.prototype = {
     initialize: function () {
         this.scrollKit();
-        var element = $$('.contentHolder')[0];
+        var element = this.contentHolder;
         this.Y = element.offsetTop;
         this.h = element.getHeight();
     },
+    contentHolder: $$('.contentHolder')[0],
+    contentWrapper: $$('.contentWrapper')[0],
+    scrollBarElement: $$('.scroll-bar')[0],
+    body: $$('body')[0],
     mouseDown: false,
     scrollKit: function () {
-        var scrollElement = $$('.contentWrapper')[0];
-        var body = $$('body')[0];
+        var scrollElement = this.contentWrapper;
+        var scrollBarElement = this.scrollBarElement;
+        var body = this.body;
         var height = scrollElement.offsetHeight;
         var scrollHeight = scrollElement.scrollHeight;
         this.sH = scrollHeight;
         var scrollPercentage = (height / scrollHeight);
-        var scrollBarElement = $$('.scroll-bar')[0];
         if (scrollHeight > height + 5) {
             scrollBarElement.setStyle({
                 height: (height * scrollPercentage) + "px",
                 top: "10px"
             });
-            Event.observe(scrollElement, 'scroll', this.scrollBar);
+            Event.observe(scrollElement, 'scroll', this.scrollBar.bind(this));
             Event.observe(scrollBarElement, 'mousedown', this.scrollMouseDown.bind(this));
             Event.observe(body, 'mousemove', this.scrollMouseMove.bind(this));
             Event.observe(body, 'mouseup', this.scrollMouseUp.bind(this));
@@ -36,7 +40,7 @@ ScrollBar.prototype = {
         var percentage = (height / scrollHeight);
         this.percentage = percentage;
         var barPosition = 10 + scrollTop * percentage;
-        var scrollBar = $$('.scroll-bar')[0];
+        var scrollBar = this.scrollBarElement;
         scrollBar.setStyle({
             top: barPosition + "px"
         });
@@ -46,7 +50,7 @@ ScrollBar.prototype = {
     },
     scrollMouseMove: function (e) {
         if (this.mouseDown) {
-            var scrollElement = $$('.contentWrapper')[0];
+            var scrollElement = this.contentWrapper;
             var y1 = e.pageY - this.Y;
             var h = this.h;
             if (y1 >= 0 && y1 <= h) {
@@ -59,6 +63,7 @@ ScrollBar.prototype = {
         this.mouseDown = false;
     }
 }
+
 
 document.observe("dom:loaded", function() {
 	var scrollBar = new ScrollBar();
