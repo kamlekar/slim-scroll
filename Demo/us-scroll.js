@@ -60,4 +60,6 @@ ScrollBar.prototype = {
     }
 }
 
-var scrollBar = new ScrollBar();
+document.observe("dom:loaded", function() {
+	var scrollBar = new ScrollBar();
+});
