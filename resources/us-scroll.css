@@ -2,25 +2,24 @@
     display: inline-block;
     line-height: 15px;
     overflow: hidden;
-    padding-top: 8px;
+    /*padding-top: 8px;*/
     position: relative;
     width: 380px;
 }
-.contentWrapper {
+.wrapper {
     height: 95px;
     overflow: auto;
-    padding-bottom: 5px;
+    /*padding-bottom: 5px;*/
     padding-right: 18px;
     width: 100%;
 }
-.scroll-bar {
+.scrollBar {
     background-color: #999999;
     border-radius: 10px;
-    height: 40px;
     opacity: 0.5;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 0px;
+    top: 0px;
     width: 5px;
     cursor: pointer;
 }
