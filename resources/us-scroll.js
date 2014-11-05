@@ -11,7 +11,7 @@ var  ScrollBar = {
         this.scrollBar.style.height = this.scrollBarHeight + "px";
         
         // Attaching mouse events
-        $(document).on('mousedown', this.scrollBar, this.setScroll.bind(this));        
+        $(document).on('mousedown', '.scrollBar', this.setScroll.bind(this));        
 
         // For scroll
         // $(document).on('scroll', contentHolder, this.goScroll.bind(this));
@@ -23,12 +23,19 @@ var  ScrollBar = {
 
         // disable scroll event
         this.wrapper.onscroll = null;
-        this.firstY = this.wrapper.offsetTop;
+        this.offsetTop = this.wrapper.offsetTop;
+        this.firstY = e.pageY;
     },
     beginScroll: function(e){
         // move the cursor position and also change the scrollPosition of the container.
-        var top = (e.pageY - this.firstY)/this.wrapperHeight * 100; 
+        var top = this.scrollBar.style.top;
+        console.log("top", parseInt(top, 10));
+        top = top.length?parseInt(top, 10)*100/this.wrapperHeight: 0;
+        // console.log(this.firstY);
+        console.log('top percent', top, (e.pageY - this.firstY)/this.wrapperHeight * 100);
+        top += (e.pageY - this.firstY)/this.wrapperHeight * 100; 
         var threshold = 100 - this.scrollPercentage;
+        console.log(top);
         if(top > 0 && top <= threshold){
             $(this.scrollBar).css({
                 'top': top + "%"
