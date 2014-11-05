@@ -1,70 +1,60 @@
-var ScrollBar = Class.create();
-ScrollBar.prototype = {
-    initialize: function () {
-        this.scrollKit();
-        var element = this.contentHolder;
-        this.Y = element.offsetTop;
-        this.h = element.getHeight();
+var  ScrollBar = {
+    scrollKit: function(contentHolder){
+        this.content = contentHolder.getElementsByClassName('content')[0];
+        this.wrapper = contentHolder.getElementsByClassName('wrapper')[0];
+        this.scrollBar = contentHolder.getElementsByClassName('scrollBar')[0];
+        this.wrapperHeight = this.wrapper.offsetHeight;
+        this.scrollHeight = this.wrapper.scrollHeight;
+        this.scrollPercentage = (this.wrapperHeight/this.scrollHeight) * 100;
+        
+        this.scrollBarHeight = (this.scrollPercentage * this.wrapperHeight/100);
+        this.scrollBar.style.height = this.scrollBarHeight + "px";
+        
+        // Attaching mouse events
+        $(document).on('mousedown', this.scrollBar, this.setScroll.bind(this));        
+
+        // For scroll
+        // $(document).on('scroll', contentHolder, this.goScroll.bind(this));
+        this.wrapper.onscroll = this.goScroll.bind(this);
     },
-    contentHolder: $$('.contentHolder')[0],
-    contentWrapper: $$('.contentWrapper')[0],
-    scrollBarElement: $$('.scroll-bar')[0],
-    body: $$('body')[0],
-    mouseDown: false,
-    scrollKit: function () {
-        var scrollElement = this.contentWrapper;
-        var scrollBarElement = this.scrollBarElement;
-        var body = this.body;
-        var height = scrollElement.offsetHeight;
-        var scrollHeight = scrollElement.scrollHeight;
-        this.sH = scrollHeight;
-        var scrollPercentage = (height / scrollHeight);
-        if (scrollHeight > height + 5) {
-            scrollBarElement.setStyle({
-                height: (height * scrollPercentage) + "px",
-                top: "10px"
+    setScroll: function(e){
+        $(document).on('mousemove', 'body', this.beginScroll.bind(this));
+        $(document).on('mouseup', 'body', this.endScroll.bind(this));
+
+        // disable scroll event
+        this.wrapper.onscroll = null;
+        this.firstY = this.wrapper.offsetTop;
+    },
+    beginScroll: function(e){
+        // move the cursor position and also change the scrollPosition of the container.
+        var top = (e.pageY - this.firstY)/this.wrapperHeight * 100; 
+        var threshold = 100 - this.scrollPercentage;
+        if(top > 0 && top <= threshold){
+            $(this.scrollBar).css({
+                'top': top + "%"
             });
-            Event.observe(scrollElement, 'scroll', this.scrollBar.bind(this));
-            Event.observe(scrollBarElement, 'mousedown', this.scrollMouseDown.bind(this));
-            Event.observe(body, 'mousemove', this.scrollMouseMove.bind(this));
-            Event.observe(body, 'mouseup', this.scrollMouseUp.bind(this));
-        } else {
-            Element.hide(scrollBarElement);
+            var scrollTop = top * this.scrollHeight /100;
+            $(this.wrapper).scrollTop(scrollTop);
         }
     },
-    scrollBar: function (e) {
-        var elem = e.currentTarget;
-        var height = elem.offsetHeight;
-        var scrollHeight = elem.scrollHeight;
-        var scrollTop = elem.scrollTop;
-        var percentage = (height / scrollHeight);
-        this.percentage = percentage;
-        var barPosition = 10 + scrollTop * percentage;
-        var scrollBar = this.scrollBarElement;
-        scrollBar.setStyle({
-            top: barPosition + "px"
+    endScroll: function(e){
+        $(document).off('mousemove', 'body');
+        $(document).off('mouseup', 'body');
+
+        // Enable scroll event
+        this.wrapper.onscroll = this.goScroll.bind(this);  
+    },
+    goScroll: function(e){
+        var self = $(e.target);
+        var scrollTop = self.scrollTop();
+        var top = scrollTop/this.scrollHeight * 100;
+        $(this.scrollBar).css({
+            'top': top + "%"
         });
-    },
-    scrollMouseDown: function (e) {
-        this.mouseDown = true;
-    },
-    scrollMouseMove: function (e) {
-        if (this.mouseDown) {
-            var scrollElement = this.contentWrapper;
-            var y1 = e.pageY - this.Y;
-            var h = this.h;
-            if (y1 >= 0 && y1 <= h) {
-                var cP = (y1 / h);
-                scrollElement.scrollTop = this.sH * cP;
-            }
-        }
-    },
-    scrollMouseUp: function (e) {
-        this.mouseDown = false;
     }
 }
 
-
-document.observe("dom:loaded", function() {
-	var scrollBar = new ScrollBar();
-});
+window.onload = function(){
+    var element = document.getElementsByClassName('contentHolder')[0];
+    ScrollBar.scrollKit(element);
+}
