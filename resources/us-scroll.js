@@ -32,11 +32,11 @@
             this.wrapper.onscroll = this.goScroll.bind(this);
         },
         setScroll: function(e){
-            document.onmousemove = this.beginScroll.bind(this);
-            document.onmouseup = this.endScroll.bind(this);
+            this.addEvent('mousemove', document, this.beginScroll.bind(this));
+            this.addEvent('mouseup', document, this.endScroll.bind(this));
 
             // disable scroll event
-            this.wrapper.onscroll = null;
+            this.removeEvent('scroll', this.wrapper)
             this.offsetTop = this.wrapper.offsetTop;
             this.firstY = e.pageY;
         },
@@ -58,17 +58,23 @@
             }
         },
         endScroll: function(e){
-            document.onmousemove = null;
-            document.onmouseup = null;
+            this.removeEvent('mousemove', document);
+            this.removeEvent('mouseup', document);
 
             // Enable scroll event
-            this.wrapper.onscroll = this.goScroll.bind(this);  
+            this.addEvent('scroll', this.goScroll.bind(this));
         },
         goScroll: function(e){
             var element = e.currentTarget;
             var scrollTop = element.scrollTop;
             var top = scrollTop/this.scrollHeight * 100;
             this.scrollBar.style.top = top + "%";
-        }
+        },
+        addEvent: function(event, element, func){
+            element['on' + event] = func;
+        },
+        removeEvent: function(event, element){
+            element['on' + event] = null;
+        },
     }
 })(window);
