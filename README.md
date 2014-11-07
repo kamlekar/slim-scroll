@@ -7,6 +7,10 @@ This plugin lets you design the scroll bar by using simple css properties. It is
 To make it work, include `us-scroll.js` (_plugin_) and `us-scroll.css` files in your project.
 
 
+##[Demo](https://rawgit.com/venkateshwar/Ultimate-Slim-scroll/master/index.html)
+
+
 _need to refactor the code, which I will do soon_
 
 Please file issues if you find any.
+
