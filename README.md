@@ -1,10 +1,12 @@
-Ultimate-slim-scroll v1.0
-=========================
+Ultimate-slim-scroll 
+====================
 
-HTML element scroll bar designer. Design as you want using CSS.
+Ultimate slim scroll is a replacement of default scrollbar provided by browsers. 
+This plugin lets you design the scroll bar by using simple css properties. It is created using vanilla javascript and css.
 
-I created this slim scroll using jquery. I will convert it to pure javascript soon.
+To make it work, include `us-scroll.js` (_plugin_) and `us-scroll.css` files in your project.
 
-[Working example at jsfiddle](http://jsfiddle.net/venkateshwar/f7aLh/5/) (_using prototype js 1.7_)
 
-Please style the scroll bar as you want by changing the styles to `.scrollBar` class in `us-scroll.css` file.
+_need to refactor the code, which I will do soon_
+
+Please issues if you find any.
