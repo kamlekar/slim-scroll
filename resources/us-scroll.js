@@ -1,10 +1,10 @@
-(function(w){
-    ScrollBar = {
-        scrollKit: function(contentHolder){
-            var html = contentHolder.innerHTML;
-            contentHolder.innerHTML = "";
+(function(){
+    scrollBar = {
+        useSlimScroll: function(container){
+            var html = container.innerHTML;
+            container.innerHTML = "";
 
-            this.wrapper = this.createElement("wrapper unselectable", "", contentHolder);
+            this.wrapper = this.createElement("wrapper unselectable", "", container);
             this.content = this.createElement("content", html, this.wrapper);
             this.scrollBar = this.createElement("scrollBar", "", this.wrapper);
 
@@ -18,7 +18,7 @@
             this.addEvent('mousedown', this.scrollBar, this.setScroll.bind(this));        
 
             // For scroll
-            this.addEvent('scroll', this.wrapper, this.goScroll.bind(this));
+            this.addEvent('scroll', this.wrapper, this.doScroll.bind(this));
         },
         createElement: function(className, html, parent){
             var div = document.createElement('div');
@@ -58,9 +58,9 @@
             this.removeEvent('mouseup', document);
 
             // Enable scroll event
-            this.addEvent('scroll', this.wrapper, this.goScroll.bind(this));
+            this.addEvent('scroll', this.wrapper, this.doScroll.bind(this));
         },
-        goScroll: function(e){
+        doScroll: function(e){
             var element = e.currentTarget;
             var scrollTop = element.scrollTop;
             var top = scrollTop/this.scrollHeight * 100;
