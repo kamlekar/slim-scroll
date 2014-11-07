@@ -11,15 +11,14 @@ var  ScrollBar = {
         this.scrollBar.style.height = this.scrollBarHeight + "px";
         
         // Attaching mouse events
-        $(document).on('mousedown', '.scrollBar', this.setScroll.bind(this));        
+        this.scrollBar.onmousedown = this.setScroll.bind(this);        
 
         // For scroll
-        // $(document).on('scroll', contentHolder, this.goScroll.bind(this));
         this.wrapper.onscroll = this.goScroll.bind(this);
     },
     setScroll: function(e){
-        $(document).on('mousemove', 'body', this.beginScroll.bind(this));
-        $(document).on('mouseup', 'body', this.endScroll.bind(this));
+        document.onmousemove = this.beginScroll.bind(this);
+        document.onmouseup = this.endScroll.bind(this);
 
         // disable scroll event
         this.wrapper.onscroll = null;
@@ -28,36 +27,32 @@ var  ScrollBar = {
     },
     beginScroll: function(e){
         // move the cursor position and also change the scrollPosition of the container.
-        var wrapperScrollTop = $(this.wrapper).scrollTop();
+        var wrapperScrollTop = this.wrapper.scrollTop;
         var top = (e.pageY - this.firstY); 
         if(!this.previousTop){
             this.previousTop = top + 1;
         }
-
-        if((this.previousTop > top && top >= 0 && this.firstY > this.offsetTop) || (this.firstY > this.offsetTop && top >= 0 && (wrapperScrollTop + this.wrapperHeight !== this.scrollHeight))){
+        var blnThreshold = top >= 0 && this.firstY > this.offsetTop;
+        if((this.previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + this.wrapperHeight !== this.scrollHeight))){
             var threshold = 100 - this.scrollPercentage;
-            $(this.scrollBar).css({
-                'top': top + "px"
-            });
+            this.scrollBar.style.top = top + "px";
             this.previousTop = top;
             var scrollTop = (top/this.wrapperHeight * 100) * this.scrollHeight /100;
-            $(this.wrapper).scrollTop(scrollTop);
+            this.wrapper.scrollTop = scrollTop;
         }
     },
     endScroll: function(e){
-        $(document).off('mousemove', 'body');
-        $(document).off('mouseup', 'body');
+        document.onmousemove = null;
+        document.onmouseup = null;
 
         // Enable scroll event
         this.wrapper.onscroll = this.goScroll.bind(this);  
     },
     goScroll: function(e){
-        var self = $(e.target);
-        var scrollTop = self.scrollTop();
+        var element = e.currentTarget;
+        var scrollTop = element.scrollTop;
         var top = scrollTop/this.scrollHeight * 100;
-        $(this.scrollBar).css({
-            'top': top + "%"
-        });
+        this.scrollBar.style.top = top + "%";
     }
 }
 
