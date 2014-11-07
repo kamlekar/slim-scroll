@@ -2,15 +2,14 @@
     display: inline-block;
     line-height: 15px;
     overflow: hidden;
-    /*padding-top: 8px;*/
     position: relative;
+    height: 200px;
     width: 380px;
     border: 1px solid #CCC;
 }
 .wrapper {
-    height: 200px;
+    height: 100%;
     overflow: auto;
-    /*padding-bottom: 5px;*/
     padding-right: 18px;
     width: 100%;
 }
