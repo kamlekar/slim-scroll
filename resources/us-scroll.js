@@ -28,19 +28,19 @@ var  ScrollBar = {
     },
     beginScroll: function(e){
         // move the cursor position and also change the scrollPosition of the container.
-        var top = this.scrollBar.style.top;
-        console.log("top", parseInt(top, 10));
-        top = top.length?parseInt(top, 10)*100/this.wrapperHeight: 0;
-        // console.log(this.firstY);
-        console.log('top percent', top, (e.pageY - this.firstY)/this.wrapperHeight * 100);
-        top += (e.pageY - this.firstY)/this.wrapperHeight * 100; 
-        var threshold = 100 - this.scrollPercentage;
-        console.log(top);
-        if(top > 0 && top <= threshold){
+        var wrapperScrollTop = $(this.wrapper).scrollTop();
+        var top = (e.pageY - this.firstY); 
+        if(!this.previousTop){
+            this.previousTop = top + 1;
+        }
+
+        if((this.previousTop > top && top >= 0 && this.firstY > this.offsetTop) || (this.firstY > this.offsetTop && top >= 0 && (wrapperScrollTop + this.wrapperHeight !== this.scrollHeight))){
+            var threshold = 100 - this.scrollPercentage;
             $(this.scrollBar).css({
-                'top': top + "%"
+                'top': top + "px"
             });
-            var scrollTop = top * this.scrollHeight /100;
+            this.previousTop = top;
+            var scrollTop = (top/this.wrapperHeight * 100) * this.scrollHeight /100;
             $(this.wrapper).scrollTop(scrollTop);
         }
     },

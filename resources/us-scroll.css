@@ -5,6 +5,7 @@
     /*padding-top: 8px;*/
     position: relative;
     width: 380px;
+    border: 1px solid #CCC;
 }
 .wrapper {
     height: 200px;
