@@ -4,20 +4,9 @@
             var html = contentHolder.innerHTML;
             contentHolder.innerHTML = "";
 
-            this.wrapper = document.createElement('div');
-            this.wrapper.className = "wrapper unselectable";
-
-            this.content = document.createElement('div');
-            this.content.className = "content";
-            this.content.innerHTML = html;
-            this.wrapper.appendChild(this.content);
-
-
-            this.scrollBar = document.createElement('div');
-            this.scrollBar.className = "scrollBar";
-            this.wrapper.appendChild(this.scrollBar);
-
-            contentHolder.appendChild(this.wrapper);
+            this.wrapper = this.createElement("wrapper unselectable", "", contentHolder);
+            this.content = this.createElement("content", html, this.wrapper);
+            this.scrollBar = this.createElement("scrollBar", "", this.wrapper);
 
             this.wrapperHeight = this.wrapper.offsetHeight;
             this.scrollHeight = this.wrapper.scrollHeight;
@@ -26,17 +15,24 @@
             this.scrollBar.style.height = this.scrollPercentage + "%";
             
             // Attaching mouse events
-            this.scrollBar.onmousedown = this.setScroll.bind(this);        
+            this.addEvent('mousedown', this.scrollBar, this.setScroll.bind(this));        
 
             // For scroll
-            this.wrapper.onscroll = this.goScroll.bind(this);
+            this.addEvent('scroll', this.wrapper, this.goScroll.bind(this));
+        },
+        createElement: function(className, html, parent){
+            var div = document.createElement('div');
+            div.className = className;
+            div.innerHTML = html;
+            parent.appendChild(div);
+            return div;
         },
         setScroll: function(e){
             this.addEvent('mousemove', document, this.beginScroll.bind(this));
             this.addEvent('mouseup', document, this.endScroll.bind(this));
 
             // disable scroll event
-            this.removeEvent('scroll', this.wrapper)
+            this.removeEvent('scroll', this.wrapper);
             this.offsetTop = this.wrapper.offsetTop;
             this.firstY = e.pageY;
         },
@@ -72,11 +68,11 @@
         },
         addEvent: function(event, element, func){
             element['on' + event] = func;
-            // element.addEventListener(event, func);
+            // element.addEventListener(event, func, false);
         },
         removeEvent: function(event, element){
             element['on' + event] = null;
-            // element.addEventListener(event, null);
+            // element.removeEventListener(event, func, false);
         },
     }
 })(window);
