@@ -62,7 +62,7 @@
             this.removeEvent('mouseup', document);
 
             // Enable scroll event
-            this.addEvent('scroll', this.goScroll.bind(this));
+            this.addEvent('scroll', this.wrapper, this.goScroll.bind(this));
         },
         goScroll: function(e){
             var element = e.currentTarget;
@@ -72,9 +72,11 @@
         },
         addEvent: function(event, element, func){
             element['on' + event] = func;
+            // element.addEventListener(event, func);
         },
         removeEvent: function(event, element){
             element['on' + event] = null;
+            // element.addEventListener(event, null);
         },
     }
 })(window);
