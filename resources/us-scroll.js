@@ -11,11 +11,11 @@
             this.wrapperHeight = this.wrapper.offsetHeight;
             this.scrollHeight = this.wrapper.scrollHeight;
             this.scrollPercentage = (this.wrapperHeight/this.scrollHeight) * 100;
-            
+
             this.scrollBar.style.height = this.scrollPercentage + "%";
-            
+
             // Attaching mouse events
-            this.addEvent('mousedown', this.scrollBar, this.setScroll.bind(this));        
+            this.addEvent('mousedown', this.scrollBar, this.setScroll.bind(this));
 
             // For scroll
             this.addEvent('scroll', this.wrapper, this.doScroll.bind(this));
@@ -35,12 +35,14 @@
             this.removeEvent('scroll', this.wrapper);
             this.offsetTop = this.wrapper.offsetTop;
             this.firstY = e.pageY;
+            this.reposition = this.scrollBar.offsetTop;
         },
         beginScroll: function(e){
             // move the cursor position and also change the scrollPosition of the container.
             var wrapperScrollTop = this.wrapper.scrollTop;
-            var top = (e.pageY - this.firstY);
-            top = (top/this.wrapperHeight * 100); 
+
+            var top = this.reposition + e.pageY - this.firstY;
+            top = (top/this.wrapperHeight * 100);
             if(!this.previousTop){
                 this.previousTop = top + 1;
             }
