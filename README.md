@@ -9,6 +9,17 @@ To make it work, include `us-scroll.js` (_plugin_) and `us-scroll.css` files in 
 
 ##[Demo](https://rawgit.com/venkateshwar/Ultimate-Slim-scroll/master/index.html)
 
+###How to use:
+
+    <script>
+        window.onload = function(){  
+            var element = document.getElementsByClassName('contentHolder')[0];
+
+            // Apply slim scroll plugin
+            scrollBar.useSlimScroll(element);
+        }
+    </script>
+
 
 _need to refactor the code, which I will do soon_
 
