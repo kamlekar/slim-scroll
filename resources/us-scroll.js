@@ -23,8 +23,7 @@
             this.scrollHeight = this.wrapper.scrollHeight;
             this.scrollPercentage = (this.wrapperHeight/this.scrollHeight) * 100;
             
-            this.scrollBarHeight = (this.scrollPercentage * this.wrapperHeight/100);
-            this.scrollBar.style.height = this.scrollBarHeight + "px";
+            this.scrollBar.style.height = this.scrollPercentage + "%";
             
             // Attaching mouse events
             this.scrollBar.onmousedown = this.setScroll.bind(this);        
