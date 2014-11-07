@@ -9,4 +9,4 @@ To make it work, include `us-scroll.js` (_plugin_) and `us-scroll.css` files in 
 
 _need to refactor the code, which I will do soon_
 
-Please issues if you find any.
+Please file issues if you find any.
