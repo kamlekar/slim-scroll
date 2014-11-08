@@ -22,15 +22,6 @@
     bottom: 0px;
     right: 0px;
 }
-.mac.scrollBarContainer{
-    background-color: transparent;
-}
-.mac.scrollBarContainer .scrollBar{
-    display: none;
-}
-.mac.scrollBarContainer:hover .scrollBar{
-    display: block;
-}
 .scrollBar {
     background-color: #999999;
     border-radius: 10px;
