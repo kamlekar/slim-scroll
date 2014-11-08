@@ -14,14 +14,22 @@
     padding-right: 18px;
     width: 100%;
 }
+.scrollBarContainer{
+    background-color: #E1E1E1;
+    position: absolute;
+    width: 5px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+}
 .scrollBar {
     background-color: #999999;
     border-radius: 10px;
     opacity: 0.5;
     position: absolute;
     right: 0px;
+    left: 0px;
     top: 0px;
-    width: 5px;
     cursor: pointer;
 }
 .unselectable {
