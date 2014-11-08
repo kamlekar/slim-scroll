@@ -53,7 +53,7 @@ This plugin lets you design the scroll bar by using simple css properties. It is
 
 - Just design the scrollbar as you want by changing the above styles in css. (_file is available in this repo_)
 
-##[Demo](https://rawgit.com/venkateshwar/Ultimate-Slim-scroll/master/index.html)
+##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 
 ###How to use:
 
