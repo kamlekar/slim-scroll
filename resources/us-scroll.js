@@ -16,7 +16,8 @@
                 this.scrollBar.style.height = this.scrollPercentage + "%";
 
                 // Attaching mouse events
-                this.addEvent('mousedown', this.scrollBar, this.setScroll.bind(this));
+                this.addEvent('mousedown', this.scrollBar, this.beginScroll.bind(this));
+                this.addEvent('click', this.scrollBarContainer, this.setScroll.bind(this));
 
                 // For scroll
                 this.addEvent('scroll', this.wrapper, this.doScroll.bind(this));
@@ -29,16 +30,32 @@
                 return div;
             },
             setScroll: function(e){
-                this.addEvent('mousemove', document, this.beginScroll.bind(this));
+                if(e.target.parentElement === this.scrollBarContainer){
+                    return false;
+                }
+                var top = ((e.pageY - this.wrapper.parentElement.offsetTop)/this.wrapperHeight * 100) - this.scrollPercentage/2;
+                var threshold = 100 - this.scrollPercentage;
+                if(top > threshold){
+                    top = threshold;
+                }
+                else if(top < 0){
+                    top = 0;
+                }
+                this.scrollBar.style.top = top + "%";
+            },
+            beginScroll: function(e){
+                this.addEvent('mousemove', document, this.moveScroll.bind(this));
                 this.addEvent('mouseup', document, this.endScroll.bind(this));
 
                 // disable scroll event
                 this.removeEvent('scroll', this.wrapper);
                 this.offsetTop = this.wrapper.offsetTop;
                 this.firstY = e.pageY;
-                this.reposition = this.scrollBar.offsetTop;
+                if(!this.reposition){
+                    this.reposition = this.scrollBar.offsetTop;
+                }
             },
-            beginScroll: function(e){
+            moveScroll: function(e){
                 // move the cursor position and also change the scrollPosition of the container.
                 var wrapperScrollTop = this.wrapper.scrollTop;
 
@@ -59,7 +76,7 @@
             endScroll: function(e){
                 this.removeEvent('mousemove', document);
                 this.removeEvent('mouseup', document);
-
+                this.reposition = 0;
                 // Enable scroll event
                 this.addEvent('scroll', this.wrapper, this.doScroll.bind(this));
             },
