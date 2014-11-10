@@ -66,7 +66,7 @@
             if(parentElement === this.scrollBarContainer){
                 return false;
             }
-            var ePageY = e.pageY) || event.clientY;
+            var ePageY = e.pageY || event.clientY;
             var top = ((ePageY - this.wrapper.parentElement.offsetTop)/this.wrapperHeight * 100) - this.scrollPercentage/2;
             var threshold = 100 - this.scrollPercentage;
             if(top > threshold){
