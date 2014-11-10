@@ -1,8 +1,10 @@
-Slim-scroll 
-===========
+Slim-scroll (_Javascript scroll plugin_)
+======================================
 
 Slim scroll is a replacement of default scrollbar provided by browsers. 
 This plugin lets you design the scroll bar by using simple css properties. It is created using vanilla javascript and css.
+
+##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 
 ###Info:
 
@@ -53,19 +55,20 @@ This plugin lets you design the scroll bar by using simple css properties. It is
 
 - Just design the scrollbar as you want by changing the above styles in css. (_file is available in this repo_)
 
-##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 
 ###How to use:
 
     <script>
         window.onload = function(){  
             var element = document.getElementsByClassName('contentHolder')[0];
-
-            // Apply slim scroll plugin
+            // /* For IE8 */ var element = document.querySelector('.contentHolder');
+			
+			// Apply slim scroll plugin
             scrollBar.useSlimScroll(element);
         }
     </script>
 
+Tested on: IE8+, Chrome and Firefox.
 
-Please file issues if you find any.
+If you find any issues, please file them in issues section.
 
