@@ -1,33 +1,7 @@
 var scroll = (function(){
-        var useSlimScroll = function(container){
-
-            // Polyfill for IE8
-            if (!Function.prototype.bind) {
-                Function.prototype.bind = function(oThis) {
-                    if (typeof this !== 'function') {
-                        // closest thing possible to the ECMAScript 5
-                        // internal IsCallable function
-                        throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-                    }
-
-                    var aArgs   = Array.prototype.slice.call(arguments, 1),
-                        fToBind = this,
-                        fNOP    = function() {},
-                        fBound  = function() {
-                            return fToBind.apply(this instanceof fNOP && oThis
-                                ? this
-                                : oThis,
-                                aArgs.concat(Array.prototype.slice.call(arguments)));
-                        };
-
-                    fNOP.prototype = this.prototype;
-                    fBound.prototype = new fNOP();
-
-                    return fBound;
-                };
-            }
-
-
+    var reposition = false,
+        previousTop = false,
+        useSlimScroll = function(container){
             var html = container.innerHTML;
             container.innerHTML = "";
 
@@ -40,7 +14,7 @@ var scroll = (function(){
             }
             wrapper = createElement(e.w + e.u, "", container);
             content = createElement(e.c, html, wrapper);
-            // content.setAttribute("unselectable","on");
+            // content.setAttribute("unselectable","on"); /* IE8 unselectable fix */
             scrollBarContainer = createElement(e.S, "", wrapper);
             scrollBar = createElement(e.s, "", scrollBarContainer);
 
@@ -51,11 +25,11 @@ var scroll = (function(){
             scrollBar.style.height = scrollPercentage + "%";
 
             // Attaching mouse events
-            addEvent('mousedown', scrollBar, beginScroll.bind(scroll));
-            addEvent('click', scrollBarContainer, setScroll.bind(scroll));
+            addEvent('mousedown', scrollBar, beginScroll);
+            addEvent('click', scrollBarContainer, setScroll);
 
             // For scroll
-            addEvent('scroll', wrapper, doScroll.bind(scroll));
+            addEvent('scroll', wrapper, doScroll);
             // content.onselectstart = function() { return false; }
         },
         createElement = function(className, html, parent){
@@ -85,14 +59,14 @@ var scroll = (function(){
         },
         beginScroll = function(e){
             var e = e || event;
-            addEvent('mousemove', document, moveScroll.bind(scroll));
-            addEvent('mouseup', document, endScroll.bind(scroll));
+            addEvent('mousemove', document, moveScroll);
+            addEvent('mouseup', document, endScroll);
 
             // disable scroll event
             removeEvent('scroll', wrapper);
             offsetTop = wrapper.offsetTop;
             firstY = e.pageY || event.clientY;
-            if(!this.reposition){
+            if(!reposition){
                 reposition = scrollBar.offsetTop;
             }
         },
@@ -103,14 +77,14 @@ var scroll = (function(){
             var ePageY = e.pageY || event.clientY;
             var top = reposition + ePageY - firstY;
             top = (top/wrapperHeight * 100);
-            if(!scroll.previousTop){
-                scroll.previousTop = top + 1;
+            if(!previousTop){
+                previousTop = top + 1;
             }
             var blnThreshold = top >= 0 && firstY > offsetTop;
-            if((scroll.previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + wrapperHeight !== scrollHeight))){
+            if((previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + wrapperHeight !== scrollHeight))){
                 var threshold = 100 - scrollPercentage;
                 scrollBar.style.top = top + "%";
-                scroll.previousTop = top;
+                previousTop = top;
                 var scrollTop = top * scrollHeight /100;
                 wrapper.scrollTop = scrollTop;
             }
@@ -118,9 +92,9 @@ var scroll = (function(){
         endScroll = function(e){
             removeEvent('mousemove', document);
             removeEvent('mouseup', document);
-            scroll.reposition = 0;
+            reposition = 0;
             // Enable scroll event
-            addEvent('scroll', wrapper, doScroll.bind(scroll));
+            addEvent('scroll', wrapper, doScroll);
         },
         doScroll = function(e){
             var element = e.currentTarget;
@@ -136,7 +110,7 @@ var scroll = (function(){
             element['on' + event] = null;
             // element.removeEventListener(event, func, false);
         };
-        return {
-            useSlimScroll : useSlimScroll
-        }
+    return {
+        useSlimScroll : useSlimScroll
+    }
 })();
