@@ -1,22 +1,20 @@
 var scroll = (function(){
     var reposition = false,
         previousTop = false,
-        useSlimScroll = function(container){
-            var html = container.innerHTML;
-            container.innerHTML = "";
+        useSlimScroll = function(C){
+            var h = C.innerHTML,
+                w = "wrapper",
+                u = " unselectable",
+                c = "content",
+                S = "scrollBarContainer",
+                s = "scrollBar";
 
-            var e = {
-                w: "wrapper",
-                u: " unselectable",
-                c: "content",
-                S: "scrollBarContainer",
-                s: "scrollBar"
-            }
-            wrapper = createElement(e.w + e.u, "", container);
-            content = createElement(e.c, html, wrapper);
+            C.innerHTML = "";
+            wrapper = createElement(w + u, "", C);
+            content = createElement(c, h, wrapper);
             // content.setAttribute("unselectable","on"); /* IE8 unselectable fix */
-            scrollBarContainer = createElement(e.S, "", wrapper);
-            scrollBar = createElement(e.s, "", scrollBarContainer);
+            scrollBarContainer = createElement(S, "", wrapper);
+            scrollBar = createElement(s, "", scrollBarContainer);
 
             wrapperHeight = wrapper.offsetHeight;
             scrollHeight = wrapper.scrollHeight;
@@ -76,7 +74,11 @@ var scroll = (function(){
             var wrapperScrollTop = wrapper.scrollTop;
             var ePageY = e.pageY || event.clientY;
             var top = reposition + ePageY - firstY;
+            var threshold = 100 - scrollPercentage;
             top = (top/wrapperHeight * 100);
+            if(threshold < top){
+                top = threshold;
+            }
             if(!previousTop){
                 previousTop = top + 1;
             }
