@@ -18,7 +18,7 @@ var scroll = (function(){
 
             wrapperHeight = wrapper.offsetHeight;
             scrollHeight = wrapper.scrollHeight;
-            scrollPercentage = (wrapperHeight/scrollHeight) * 100;
+            scrollPercentage = 40; sP = (wrapperHeight/scrollHeight) * 100;
 
             scrollBar.style.height = scrollPercentage + "%";
 
@@ -84,10 +84,15 @@ var scroll = (function(){
             }
             var blnThreshold = top >= 0 && firstY > offsetTop;
             if((previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + wrapperHeight !== scrollHeight))){
-                var threshold = 100 - scrollPercentage;
+                var threshold = 100 - sP;
                 scrollBar.style.top = top + "%";
                 previousTop = top;
-                var scrollTop = top * scrollHeight /100;
+
+                //need to work
+                var remainingScroll = scrollHeight - wrapperHeight;
+                // var scrollTop = top * (scrollHeight)/100;
+                var x = remainingScroll - ((100 - scrollPercentage) * (remainingScroll)/(100 - sP));
+                var scrollTop = top * ((x / (100 - scrollPercentage)) + (scrollHeight/100));
                 wrapper.scrollTop = scrollTop;
             }
         },
