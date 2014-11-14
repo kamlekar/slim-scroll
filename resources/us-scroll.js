@@ -13,24 +13,23 @@ var scroll = (function(){
             wrapper = createElement(w + u, "", C);
             content = createElement(c, h, wrapper);
             // content.setAttribute("unselectable","on"); /* IE8 unselectable fix */
-            scrollBarContainer = createElement(S, "", wrapper);
-            scrollBar = createElement(s, "", scrollBarContainer);
+            sbc = createElement(S, "", wrapper);
+            scrollBar = createElement(s, "", sbc);
 
-            wrapperHeight = wrapper.offsetHeight;
-            scrollHeight = wrapper.scrollHeight;
-            scrollPercentage = (wrapperHeight/scrollHeight) * 100;
-            userScrollPercentage = scrollPercentage; 
+            wH = wrapper.offsetHeight;
+            sH = wrapper.scrollHeight;
+            sP = (wH/sH) * 100;
+            sP1 = 40; 
 
-            remainingUserPercentage = 100 - userScrollPercentage;
-            var x = (scrollHeight - wrapperHeight) * ((userScrollPercentage - scrollPercentage)/(100 - scrollPercentage));
-            sH = ((x / (remainingUserPercentage)) + (scrollHeight/100));
-            console.log(sH);
+            rP1 = 100 - sP1;
+            var x = (sH - wH) * ((sP1 - sP)/(100 - sP));
+            sH1 = ((x / (rP1)) + (sH/100));
 
-            scrollBar.style.height = userScrollPercentage + "%";
+            scrollBar.style.height = sP1 + "%";
 
             // Attaching mouse events
             addEvent('mousedown', scrollBar, beginScroll);
-            addEvent('click', scrollBarContainer, setScroll);
+            addEvent('click', sbc, setScroll);
 
             // For scroll
             addEvent('scroll', wrapper, doScroll);
@@ -47,12 +46,12 @@ var scroll = (function(){
             var e = e || event;
             var el = e.target || event.srcElement;
             var parentElement = el.parentElement || el.parentNode;
-            if(parentElement === scrollBarContainer){
+            if(parentElement === sbc){
                 return false;
             }
             var ePageY = e.pageY || event.clientY;
-            var top = ((ePageY - wrapper.parentElement.offsetTop)/wrapperHeight * 100) - userScrollPercentage/2;
-            var threshold = remainingUserPercentage;
+            var top = ((ePageY - wrapper.parentElement.offsetTop)/wH * 100) - sP1/2;
+            var threshold = rP1;
             if(top > threshold){
                 top = threshold;
             }
@@ -60,7 +59,7 @@ var scroll = (function(){
                 top = 0;
             }
             scrollBar.style.top = top + "%";
-            wrapper.scrollTop = top * sH;
+            wrapper.scrollTop = top * sH1;
         },
         beginScroll = function(e){
             var e = e || event;
@@ -81,20 +80,18 @@ var scroll = (function(){
             var wrapperScrollTop = wrapper.scrollTop;
             var ePageY = e.pageY || event.clientY;
             var top = reposition + ePageY - firstY;
-            var threshold = remainingUserPercentage;
-            top = (top/wrapperHeight * 100);
-            if(threshold < top){
-                top = threshold;
+            top = (top/wH * 100);
+            if(rP1 < top){
+                top = rP1;
             }
             if(!previousTop){
                 previousTop = top + 1;
             }
             var blnThreshold = top >= 0 && firstY > offsetTop;
-            if((previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + wrapperHeight !== scrollHeight))){
-                var threshold = 100 - scrollPercentage;
+            if((previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + wH !== sH))){
                 scrollBar.style.top = top + "%";
                 previousTop = top;                
-                var scrollTop = top * sH;
+                var scrollTop = top * sH1;
                 wrapper.scrollTop = scrollTop;
             }
         },
@@ -108,8 +105,8 @@ var scroll = (function(){
         doScroll = function(e){
             var element = e.currentTarget;
             var scrollTop = element.scrollTop;
-            var top = scrollTop/scrollHeight * 100;
-            scrollBar.style.top = scrollTop/sH + "%"; //top + "%";
+            var top = scrollTop/sH * 100;
+            scrollBar.style.top = scrollTop/sH1 + "%";
         },
         addEvent = function(event, element, func){
             element['on' + event] = func;
