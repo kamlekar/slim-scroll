@@ -19,7 +19,8 @@ var scroll = (function(){
             wH = wrapper.offsetHeight;
             sH = wrapper.scrollHeight;
             sP = (wH/sH) * 100;
-            sP1 = 40; 
+            // Manually set the height of the scrollbar (in percentage)
+            sP1 = sP;  
 
             rP1 = 100 - sP1;
             var x = (sH - wH) * ((sP1 - sP)/(100 - sP));
@@ -51,9 +52,8 @@ var scroll = (function(){
             }
             var ePageY = e.pageY || event.clientY;
             var top = ((ePageY - wrapper.parentElement.offsetTop)/wH * 100) - sP1/2;
-            var threshold = rP1;
-            if(top > threshold){
-                top = threshold;
+            if(top > rP1){
+                top = rP1;
             }
             else if(top < 0){
                 top = 0;
