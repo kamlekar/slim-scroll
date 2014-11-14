@@ -6,7 +6,7 @@ var scroll = (function(){
         c = "content",
         S = "scrollBarContainer",
         s = "scrollBar",
-        // mac animation classes. remove to make it normal.
+        // mac animation classes. pass empty string to make the scroll work normal.
         a = " animate",
         m = " mac"
         useSlimScroll = function(C){
@@ -26,7 +26,7 @@ var scroll = (function(){
 
             rP1 = 100 - sP1;
             var x = (sH - wH) * ((sP1 - sP)/(100 - sP));
-            sH1 = ((x / (rP1)) + (sH/100));
+            sH1 = Math.abs((x / (rP1)) + (sH/100));
 
             scrollBar.style.height = sP1 + "%";
 
