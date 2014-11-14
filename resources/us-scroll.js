@@ -1,19 +1,21 @@
 var scroll = (function(){
     var reposition = false,
         previousTop = false,
+        w = "wrapper",
+        u = " unselectable",
+        c = "content",
+        S = "scrollBarContainer",
+        s = "scrollBar",
+        // mac animation classes. remove to make it normal.
+        a = " animate",
+        m = " mac"
         useSlimScroll = function(C){
-            var h = C.innerHTML,
-                w = "wrapper",
-                u = " unselectable",
-                c = "content",
-                S = "scrollBarContainer",
-                s = "scrollBar";
-
+            var h = C.innerHTML;
             C.innerHTML = "";
-            wrapper = createElement(w + u, "", C);
+            wrapper = createElement(w + u + m, "", C);
             content = createElement(c, h, wrapper);
             // content.setAttribute("unselectable","on"); /* IE8 unselectable fix */
-            sbc = createElement(S, "", wrapper);
+            sbc = createElement(S + a, "", wrapper);
             scrollBar = createElement(s, "", sbc);
 
             wH = wrapper.offsetHeight;
@@ -45,6 +47,7 @@ var scroll = (function(){
         },
         setScroll = function(e){
             var e = e || event;
+            scrollBar.className = s;
             var el = e.target || event.srcElement;
             var parentElement = el.parentElement || el.parentNode;
             if(parentElement === sbc){
@@ -60,6 +63,7 @@ var scroll = (function(){
             }
             scrollBar.style.top = top + "%";
             wrapper.scrollTop = top * sH1;
+            sbc.className = S + a;
         },
         beginScroll = function(e){
             var e = e || event;
@@ -94,6 +98,7 @@ var scroll = (function(){
                 var scrollTop = top * sH1;
                 wrapper.scrollTop = scrollTop;
             }
+            sbc.className = S;
         },
         endScroll = function(e){
             removeEvent('mousemove', document);
@@ -101,12 +106,15 @@ var scroll = (function(){
             reposition = 0;
             // Enable scroll event
             addEvent('scroll', wrapper, doScroll);
+            sbc.className = S + a;
         },
         doScroll = function(e){
+            sbc.className = S;
             var element = e.currentTarget;
             var scrollTop = element.scrollTop;
             var top = scrollTop/sH * 100;
             scrollBar.style.top = scrollTop/sH1 + "%";
+            sbc.className = S + a;
         },
         addEvent = function(event, element, func){
             element['on' + event] = func;

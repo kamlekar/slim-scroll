@@ -17,10 +17,10 @@
 .scrollBarContainer{
     background-color: #E1E1E1;
     position: absolute;
-    width: 5px;
     top: 0px;
     bottom: 0px;
     right: 0px;
+    width: 5px;
 }
 .scrollBar {
     background-color: #999999;
@@ -31,6 +31,16 @@
     left: 0px;
     top: 0px;
     cursor: pointer;
+}
+.wrapper.mac .scrollBarContainer{
+    background-color: transparent;
+}
+.scrollBarContainer.animate .scrollBar{
+    transition: 2s opacity ease;
+    opacity: 0;
+}
+.scrollBarContainer:hover .scrollBar{
+    opacity: 0.5;
 }
 .unselectable {
     -webkit-user-select: none;
