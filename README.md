@@ -10,7 +10,7 @@ This plugin lets you design the scroll bar by using simple css properties. It is
 
 ###Info:
 
-- To make it work, include `us-scroll.js` (_plugin_) in `head` tag and add the following css:
+- To make it work, include `slimscroll.js` (_plugin_) in `head` tag and add the following css:
 	
 	    .contentHolder {
 	        display: inline-block;
