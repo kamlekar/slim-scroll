@@ -9,22 +9,25 @@ var scroll = (function(){
         s = "scrollBar",
         // mac animation classes. pass empty string to make the scroll work normal.
         a = " animate",
-        m = " mac"
+        m = " mac",
+        // properties
+        cN = "className",
+        oT = "offsetTop",
         useSlimScroll = function(C){
             if(C.offsetHeight < C.scrollHeight){
                 var h = C.innerHTML;
                 C.innerHTML = "";
                 var k = v.length;
                 v[k] = {};
-                v[k].wrapper = createElement(w + u + m, "", C);
-                v[k].content = createElement(c, h, v[k].wrapper);
-                // content.setAttribute("unselectable","on"); /* IE8 unselectable fix */
-                v[k].sbc = createElement(S + a, "", v[k].wrapper);
+                v[k][w] = createElement(w + u + m, "", C);
+                v[k][c] = createElement(c, h, v[k][w]);
+                // v[k][c].setAttribute("unselectable","on"); /* IE8 unselectable fix */
+                v[k].sbc = createElement(S + a, "", v[k][w]);
                 v[k].scrollBar = createElement(s, "", v[k].sbc);
 
 
-                v[k].wH = v[k].wrapper.offsetHeight;
-                v[k].sH = v[k].wrapper.scrollHeight;
+                v[k].wH = v[k][w].offsetHeight;
+                v[k].sH = v[k][w].scrollHeight;
                 v[k].sP = (v[k].wH/v[k].sH) * 100;
                 // Manually set the height of the scrollbar (in percentage)
                 v[k].sP1 = v[k].sP;
@@ -47,12 +50,12 @@ var scroll = (function(){
                 addEvent('click', v[k].sbc, setScroll);
 
                 // For scroll
-                addEvent('scroll', v[k].wrapper, doScroll);
+                addEvent('scroll', v[k][w], doScroll);
                 // content.onselectstart = function() { return false; }
             }
         },
         setAttribute = function(p, k){
-            v[k].wrapper.setAttribute(p, k);
+            v[k][w].setAttribute(p, k);
         },
         getAttribute = function(e, p){
             return e.getAttribute(p);
@@ -80,7 +83,7 @@ var scroll = (function(){
                 return false;
             }
             var ePageY = e.pageY || event.clientY;
-            var top = ((ePageY - v[k].wrapper.parentElement.offsetTop)/v[k].wH * 100) - v[k].sP1/2;
+            var top = ((ePageY - v[k][w].parentElement[oT])/v[k].wH * 100) - v[k].sP1/2;
             if(top > v[k].rP1){
                 top = v[k].rP1;
             }
@@ -88,8 +91,8 @@ var scroll = (function(){
                 top = 0;
             }
             v[k].scrollBar.style.top = top + "%";
-            v[k].wrapper.scrollTop = top * v[k].sH1;
-            v[k].sbc.className = S + a;
+            v[k][w].scrollTop = top * v[k].sH1;
+            v[k].sbc[cN] = S + a;
         },
         beginScroll = function(e){
             var e = e || event;
@@ -105,13 +108,13 @@ var scroll = (function(){
             addEvent('mouseup', document, endScroll);
 
             // disable scroll event
-            removeEvent('scroll', v[k].wrapper);
+            removeEvent('scroll', v[k][w]);
 
-            v[k].offsetTop = v[k].wrapper.offsetTop;
+            v[k][oT] = v[k][w][oT];
             v[k].firstY = e.pageY || event.clientY;
 
             if(!v[k].reposition){
-                v[k].reposition = scrollBar.offsetTop;
+                v[k].reposition = scrollBar[oT];
             }
 
             currentkey = k;
@@ -121,7 +124,7 @@ var scroll = (function(){
             // move the cursor position and also change the scrollPosition of the container.
             var k = currentkey; 
 
-            var wrapperScrollTop = v[k].wrapper.scrollTop;
+            var wrapperScrollTop = v[k][w].scrollTop;
             var ePageY = e.pageY || event.clientY;
             var top = v[k].reposition + ePageY - v[k].firstY;
             top = (top/v[k].wH * 100);
@@ -136,10 +139,10 @@ var scroll = (function(){
                 v[k].scrollBar.style.top = top + "%";
                 v[k].previousTop = top;                
                 var scrollTop = top * v[k].sH1;
-                v[k].wrapper.scrollTop = scrollTop;
+                v[k][w].scrollTop = scrollTop;
             }
 
-            v[k].sbc.className = S;
+            v[k].sbc[cN] = S;
         },
         endScroll = function(e){
             var e = e || event;
@@ -152,8 +155,8 @@ var scroll = (function(){
             v[k].reposition = 0;
 
             // Enable scroll event
-            addEvent('scroll', v[k].wrapper, doScroll);
-            v[k].sbc.className = S + a;
+            addEvent('scroll', v[k][w], doScroll);
+            v[k].sbc[cN] = S + a;
         },
         doScroll = function(e){
             var e = e || event;
@@ -163,11 +166,11 @@ var scroll = (function(){
 
             var k = getAttribute(wrapper, 'scroll-k');
 
-            v[k].sbc.className = S;
-            var scrollTop = v[k].wrapper.scrollTop;
+            v[k].sbc[cN] = S;
+            var scrollTop = v[k][w].scrollTop;
             var top = scrollTop/v[k].sH * 100;
             v[k].scrollBar.style.top = scrollTop/v[k].sH1 + "%";
-            v[k].sbc.className = S + a;
+            v[k].sbc[cN] = S + a;
         },
         addEvent = function(event, element, func){
             element['on' + event] = func;

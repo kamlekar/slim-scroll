@@ -21,6 +21,7 @@
     bottom: 0px;
     right: 0px;
     width: 5px;
+    cursor: pointer;
 }
 .scrollBar {
     background-color: #999999;
@@ -30,7 +31,6 @@
     right: 0px;
     left: 0px;
     top: 0px;
-    cursor: pointer;
 }
 .wrapper.mac .scrollBarContainer{
     background-color: transparent;
@@ -41,6 +41,7 @@
 }
 .scrollBarContainer:hover .scrollBar{
     opacity: 0.5;
+    transition: none;
 }
 .unselectable {
     -webkit-user-select: none;
