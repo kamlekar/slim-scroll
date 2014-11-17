@@ -54,8 +54,8 @@ var scroll = (function(){
         setAttribute = function(p, k){
             v[k].wrapper.setAttribute(p, k);
         },
-        getAttribute = function(k, p){
-            return v[k].wrapper.getAttribute(p);
+        getAttribute = function(e, p){
+            return e.getAttribute(p);
         },
         createElement = function(className, html, parent){
             var div = document.createElement('div');
@@ -71,7 +71,7 @@ var scroll = (function(){
             var scrollBar = sbc.querySelector('.scrollBar');
             var wrapper = sbc.parentElement;
 
-            var k = getAttribute(k, 'scroll-k');
+            var k = getAttribute(wrapper, 'scroll-k');
 
             v[k].scrollBar.className = s;
             var el = e.target || event.srcElement;
@@ -99,7 +99,7 @@ var scroll = (function(){
             var sbc = scrollBar.parentElement;
             var wrapper = sbc.parentElement;
 
-            var k = getAttribute(k, 'scroll-k');
+            var k = getAttribute(wrapper, 'scroll-k');
 
             addEvent('mousemove', document, moveScroll);
             addEvent('mouseup', document, endScroll);
@@ -161,7 +161,7 @@ var scroll = (function(){
 
             var wrapper = e.currentTarget;
 
-            var k = getAttribute(k, 'scroll-k');
+            var k = getAttribute(wrapper, 'scroll-k');
 
             v[k].sbc.className = S;
             var scrollTop = v[k].wrapper.scrollTop;
