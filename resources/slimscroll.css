@@ -9,10 +9,14 @@
     margin-top: 20px;
 }
 .wrapper {
-    height: 100%;
     overflow: auto;
-    padding-right: 18px;
-    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: -18px;
+    bottom: 0px;
+    padding: 5px;
+    padding-right: 3px;
 }
 .scrollBarContainer{
     background-color: #E1E1E1;
@@ -32,7 +36,7 @@
     left: 0px;
     top: 0px;
 }
-.wrapper.mac .scrollBarContainer{
+.wrapper.mac + .scrollBarContainer{
     background-color: transparent;
 }
 .scrollBarContainer.animate .scrollBar{
