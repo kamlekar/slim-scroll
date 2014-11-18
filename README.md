@@ -71,5 +71,13 @@ Some of the styles in the above css are necessary to let the scroll work.
         }
     </script>
 
+###How I got this thought:
+
+I got this thought, when I found solution to hide the default scrollbar (_using css_) which was the requirement for a post on [Stackoverflow](http://stackoverflow.com/a/16671476/1577396).
+
+The solution was simple but that is how I got this thought :).
+
+---------------------------------
+
 If you find any issues, please file them in issues section.
 
