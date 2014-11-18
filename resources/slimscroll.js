@@ -1,7 +1,5 @@
 var scroll = (function(){
     var v = [],
-        reposition = false,
-        previousTop = false,
         w = "wrapper",c = "content",s = "scrollBar",
         S = "scrollBarContainer",u = " unselectable",
         // mac animation classes. pass empty string to make the scroll work normally.
@@ -9,15 +7,15 @@ var scroll = (function(){
         m = " mac",
         // properties
         cN = "className",oT = "offsetTop",pE = "parentElement", pN = "parentNode",
-        pS = "previousSibling", sE = "srcElement",
+        pS = "previousSibling", sE = "srcElement",iH = "innerHTML",
         cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
 
         useSlimScroll = function(C){
             if(C.offsetHeight < C.scrollHeight){
-                var h = C.innerHTML,k = v.length;
-                C.innerHTML = "";
+                var h = C[iH],k = v.length;
+                C[iH] = "";
                 v[k] = {};
-                v[k][w] = cE(w + u + m, h, C); //cE(w + u + m, "", C);
+                v[k][w] = cE(w + u + m, h, C);
                 v[k][S] = cE(S + a, "", C);
                 v[k][s] = cE(s, "", v[k][S]);
 
@@ -34,7 +32,7 @@ var scroll = (function(){
                 v[k][s].style.height = v[k].sP1 + U;
 
                 //store the key 'k' in the container
-                setAttr(sK, k);
+                v[k][w].setAttribute(sK, k);
 
                 // Attaching mouse events
                 addEvent('mousedown', v[k][s], beginScroll);
@@ -44,28 +42,23 @@ var scroll = (function(){
                 addEvent('scroll', v[k][w], doScroll);
             }
         },
-        setAttr = function(p, k){
-            v[k][w].setAttribute(p, k);
-        },
         getAttr = function(e, p){
-            if(!e){return false;}
+            if(!e){return;}
             return e.getAttribute(p);            
         },
         cE = function(c, h, p){
-            var div = document.createElement('div');
-            div[cN] = c;
-            div.innerHTML = h;
-            p.appendChild(div);
-            return div;
+            var d = document.createElement('div');
+            d[cN] = c;
+            d[iH] = h;
+            p.appendChild(d);
+            return d;
         },
         setScroll = function(e){
             var e = e || event,el = e.target || event[sE],
-                parentElement = el[pE] || el[pN],
+                p = el[pE] || el[pN],
                 k = getAttr(el[pS], sK),i = v[k];
 
-            if(!i || parentElement === i[S]){
-                return false;
-            }
+            if(!i || p === i[S]){return;}
             i[s][cN] = s;
             var ePageY = e.pageY || event.clientY,
                 top = ((ePageY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
@@ -81,8 +74,14 @@ var scroll = (function(){
         },
         beginScroll = function(e){
             // removing selected text
-            if(window.getSelection){
-                window.getSelection().removeAllRanges();
+            // Link: http://stackoverflow.com/a/3171348
+            var sel = window.getSelection ? window.getSelection() : document.selection;
+            if (sel) {
+                if (sel.removeAllRanges) {
+                    sel.removeAllRanges();
+                } else if (sel.empty) {
+                    sel.empty();
+                }
             }
             var e = e || event,
                 el = e[cT] || e[sE],
@@ -90,9 +89,6 @@ var scroll = (function(){
 
             addEvent('mousemove', document, moveScroll);
             addEvent('mouseup', document, endScroll);
-
-            // disable scroll event
-            removeEvent('scroll', i[w]);
 
             i[oT] = i[w][oT];
             i.firstY = e.pageY || event.clientY;
@@ -106,11 +102,9 @@ var scroll = (function(){
         moveScroll = function(e){
             var e = e || event,
                 k = currentkey,i = v[k],
-                wrapperScrollTop = i[w].scrollTop,
                 ePageY = e.pageY || event.clientY,
-                top = i.reposition + ePageY - i.firstY;
+                top = (i.reposition + ePageY - i.firstY)/i.wH * 100;
 
-            top = (top/i.wH * 100);
             if(i.rP1 < top){
                 top = i.rP1;
             }
@@ -118,14 +112,13 @@ var scroll = (function(){
                 i.previousTop = top + 1;
             }
             var blnThreshold = top >= 0 && i.firstY > i.offsetTop;
-            if((i.previousTop > top && blnThreshold) || (blnThreshold && (wrapperScrollTop + i.wH !== i.sH))){
+            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w].scrollTop + i.wH !== i.sH))){
                 i[s].style.top = top + U;
-                i.previousTop = top;                
-                var scrollTop = top * i.sH1;
-                i[w].scrollTop = scrollTop;
+                i.previousTop = top;   
+                i[w].scrollTop = top * i.sH1;
             }
 
-            v[k][S][cN] = S;
+            i[S][cN] = S;
         },
         endScroll = function(e){
             var e = e || event,k = currentkey,i = v[k]; 
@@ -134,13 +127,11 @@ var scroll = (function(){
             removeEvent('mouseup', document);
 
             i.reposition = 0;
-            // Enable scroll event
-            addEvent('scroll', i[w], doScroll);
             i[S][cN] = S + a;
         },
         doScroll = function(e){
-            var e = e || event,wrapper = e[cT] || e[sE],
-                k = getAttr(wrapper, sK),i = v[k];
+            var e = e || event,
+                k = getAttr((e[cT] || e[sE]), sK),i = v[k];
             if(!i){return;}
             i[S][cN] = S;
             var scrollTop = i[w].scrollTop;
