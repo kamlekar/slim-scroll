@@ -8,7 +8,7 @@ var scroll = (function(){
         a = " animate",
         m = " mac",
         // properties
-        cN = "className",oT = "offsetTop",pE = "parentNode",
+        cN = "className",oT = "offsetTop",pE = "parentElement", pN = "parentNode",
         pS = "previousSibling", sE = "srcElement",
         cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
 
@@ -18,10 +18,8 @@ var scroll = (function(){
                 C.innerHTML = "";
                 v[k] = {};
                 v[k][w] = cE(w + u + m, h, C); //cE(w + u + m, "", C);
-                // v[k][w].sA("unselectable","on"); /* IE8 unselectable fix */
                 v[k][S] = cE(S + a, "", C);
                 v[k][s] = cE(s, "", v[k][S]);
-
 
                 v[k].wH = v[k][w].offsetHeight;
                 v[k].sH = v[k][w].scrollHeight;
@@ -44,7 +42,6 @@ var scroll = (function(){
 
                 // For scroll
                 addEvent('scroll', v[k][w], doScroll);
-                // content.onselectstart = function() { return false; }
             }
         },
         setAttr = function(p, k){
@@ -63,7 +60,7 @@ var scroll = (function(){
         },
         setScroll = function(e){
             var e = e || event,el = e.target || event[sE],
-                parentElement = el[pE],
+                parentElement = el[pE] || el[pN],
                 k = getAttr(el[pS], sK),i = v[k];
 
             if(!i || parentElement === i[S]){
@@ -71,7 +68,7 @@ var scroll = (function(){
             }
             i[s][cN] = s;
             var ePageY = e.pageY || event.clientY,
-                top = ((ePageY - i[w][pE][oT])/i.wH * 100) - i.sP1/2;
+                top = ((ePageY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
             if(top > i.rP1){
                 top = i.rP1;
             }
@@ -83,9 +80,13 @@ var scroll = (function(){
             i[S][cN] = S + a;
         },
         beginScroll = function(e){
+            // removing selected text
+            if(window.getSelection){
+                window.getSelection().removeAllRanges();
+            }
             var e = e || event,
                 el = e[cT] || e[sE],
-                k = getAttr(el[pE][pS], sK),i = v[k];
+                k = getAttr((el[pE] || el[pN])[pS], sK),i = v[k];
 
             addEvent('mousemove', document, moveScroll);
             addEvent('mouseup', document, endScroll);
