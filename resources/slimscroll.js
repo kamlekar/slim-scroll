@@ -2,9 +2,9 @@ var scroll = (function(){
     var v = [],
         w = "wrapper",c = "content",s = "scrollBar",
         S = "scrollBarContainer",u = " unselectable",
-        // mac animation classes. pass empty string to make the scroll work normally.
-        a = " animate",
-        m = " mac",
+        // mac animation classes. use the commented string to activate mac scroll
+        a = "", //" animate",
+        m = "", //" mac",
         // properties
         cN = "className",oT = "offsetTop",pE = "parentElement", pN = "parentNode",
         pS = "previousSibling", sE = "srcElement",iH = "innerHTML",
