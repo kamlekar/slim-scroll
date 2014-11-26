@@ -44,39 +44,9 @@ or to add your own defined css styles:
 		'scrollBarContainerSpecialClass': ''  
 	});
 
-#####Note:
+###Note:
 
-To make this work in IE8, add the below classes in your css file:
-
-    /* Fallback css */
-    
-	.slimScroll > div {
-		position: absolute !important;
-		overflow: auto !important;
-		left: 0px!important;
-		top:0px !important;
-		right: -18px !important;
-		bottom: 0px !important;
-		padding-right: 8px !important;
-	}
-
-	.slimScroll > div + div {
-        position: absolute !important;
-        top: 0px !important;
-        bottom: 0px !important;
-        right: 0px !important;
-        left: auto !important;
-        width: 5px !important;
-        cursor: pointer !important;
-        padding-right: 0px !important;
-    }
-
-	.slimScroll > div + div > div {
-        position:absolute !important;
-        top:0px;
-        left:0px;
-        right:0px;
-    }
+Add some background-color to make the scroll bar visible :)
 
 ###How I got this thought:
 
