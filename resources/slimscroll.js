@@ -1,45 +1,50 @@
 var scroll = (function(){
-    var v = [],
-        w = "wrapper",c = "content",s = "scrollBar",
-        S = "scrollBarContainer",u = " unselectable",
-        // mac animation classes. use the commented string to activate mac scroll
-        a = "", //" animate",
-        m = "", //" mac",
+
+
+    var v = [],E = 'e',
+        w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",
         // properties
         cN = "className",oT = "offsetTop",pE = "parentElement", pN = "parentNode",
         pS = "previousSibling", sE = "srcElement",iH = "innerHTML",
         cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
 
-        useSlimScroll = function(C){
+        useSlimScroll = function(C, p){
             if(C.offsetHeight < C.scrollHeight){
-                var h = C[iH],k = v.length;
+                var h = C[iH],k = v.length, z = v[k] = {}, q = z[E] = {};
+                // setting user defined classes
+                q.w = p && p.wrapperClass ? p.wrapperClass : w;
+                q.s = p && p.scrollBarClass ? p.scrollBarClass : s;
+                q.S = p && p.scrollBarContainerClass ? p.scrollBarContainerClass : S;
+                q.a = p && p.scrollBarContainerSpecialClass ? " " + p.scrollBarContainerSpecialClass : " " + a;
+
                 C[iH] = "";
-                v[k] = {};
-                v[k][w] = cE(w + u + m, h, C);
-                v[k][S] = cE(S + a, "", C);
-                v[k][s] = cE(s, "", v[k][S]);
+                z[w] = cE(q.w, h, C);
+                z[S] = cE(q.S + q.a, "", C);
+                z[s] = cE(q.s, "", z[S]);
 
-                v[k].wH = v[k][w].offsetHeight;
-                v[k].sH = v[k][w].scrollHeight;
-                v[k].sP = (v[k].wH/v[k].sH) * 100;
+                
+
+                z.wH = z[w].offsetHeight;
+                z.sH = z[w].scrollHeight;
+                z.sP = (z.wH/z.sH) * 100;
                 // Manually set the height of the scrollbar (in percentage)
-                v[k].sP1 = v[k].sP;
+                z.sP1 = z.sP;
 
-                v[k].rP1 = 100 - v[k].sP1;
-                v[k].x = (v[k].sH - v[k].wH) * ((v[k].sP1 - v[k].sP)/(100 - v[k].sP));
-                v[k].sH1 = Math.abs((v[k].x / (v[k].rP1)) + (v[k].sH/100));
+                z.rP1 = 100 - z.sP1;
+                z.x = (z.sH - z.wH) * ((z.sP1 - z.sP)/(100 - z.sP));
+                z.sH1 = Math.abs((z.x / (z.rP1)) + (z.sH/100));
 
-                v[k][s].style.height = v[k].sP1 + U;
+                z[s].style.height = z.sP1 + U;
 
                 //store the key 'k' in the container
-                v[k][w].setAttribute(sK, k);
+                z[w].setAttribute(sK, k);
 
                 // Attaching mouse events
-                addEvent('mousedown', v[k][s], beginScroll);
-                addEvent('click', v[k][S], setScroll);
+                addEvent('mousedown', z[s], beginScroll);
+                addEvent('click', z[S], setScroll);
 
                 // For scroll
-                addEvent('scroll', v[k][w], doScroll);
+                addEvent('scroll', z[w], doScroll);
             }
         },
         getAttr = function(e, p){
@@ -59,9 +64,8 @@ var scroll = (function(){
                 k = getAttr(el[pS], sK),i = v[k];
 
             if(!i || p === i[S]){return;}
-            i[s][cN] = s;
-            var ePageY = e.pageY || event.clientY,
-                top = ((ePageY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
+            var eY = e.pageY || event.clientY,
+                top = ((eY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
             if(top > i.rP1){
                 top = i.rP1;
             }
@@ -70,7 +74,7 @@ var scroll = (function(){
             }
             i[s].style.top = top + U;
             i[w].scrollTop = top * i.sH1;
-            i[S][cN] = S + a;
+            i[S][cN] = i[E].S + i[E].a;
         },
         beginScroll = function(e){
             // removing selected text
@@ -102,8 +106,8 @@ var scroll = (function(){
         moveScroll = function(e){
             var e = e || event,
                 k = currentkey,i = v[k],
-                ePageY = e.pageY || event.clientY,
-                top = (i.reposition + ePageY - i.firstY)/i.wH * 100;
+                eY = e.pageY || event.clientY,
+                top = (i.reposition + eY - i.firstY)/i.wH * 100;
 
             if(i.rP1 < top){
                 top = i.rP1;
@@ -118,7 +122,7 @@ var scroll = (function(){
                 i[w].scrollTop = top * i.sH1;
             }
 
-            i[S][cN] = S;
+            i[S][cN] = i[E].S;
         },
         endScroll = function(e){
             var e = e || event,k = currentkey,i = v[k]; 
@@ -127,17 +131,17 @@ var scroll = (function(){
             removeEvent('mouseup', document);
 
             i.reposition = 0;
-            i[S][cN] = S + a;
+            i[S][cN] = i[E].S + i[E].a;
         },
         doScroll = function(e){
             var e = e || event,
                 k = getAttr((e[cT] || e[sE]), sK),i = v[k];
             if(!i){return;}
-            i[S][cN] = S;
+            i[S][cN] = i[E].S;
             var scrollTop = i[w].scrollTop;
             var top = scrollTop/i.sH * 100;
             i[s].style.top = scrollTop/i.sH1 + U;
-            i[S][cN] = S + a;
+            i[S][cN] = i[E].S + i[E].a;
         },
         addEvent = function(e, el, func){
             el['on' + e] = func;
@@ -146,7 +150,35 @@ var scroll = (function(){
         removeEvent = function(e, el){
             el['on' + e] = null;
             // el.removeEventListener(e, func, false);
+        },
+        addCSSRule = function(sheet, selector, rules, index) {
+            if("insertRule" in sheet) {
+                sheet.insertRule(selector + "{" + rules + "}", index);
+            }
+            else if("addRule" in sheet) {
+                sheet.addRule(selector, rules, index);
+            }
+        },
+        insertCss = function(){
+            // Inserting css rules
+            // Link: http://davidwalsh.name/add-rules-stylesheets
+            var imp = " !important";
+            var pAbsolute = "position:absolute"+imp;
+            // classes
+            var wrapper = pAbsolute+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";";
+            var scrollBarContainer = pAbsolute+";top:0px"+imp+";bottom:0px"+imp+";right:0px"+imp+";left:auto"+imp+";width:5px"+imp+";cursor:pointer"+imp+";padding-right:0px"+imp+";";
+            var scrollBar = pAbsolute+";top:0px;left:0px;right:0px"+imp+";";
+            //creating a sheet
+            var style = document.createElement('style');
+            // WebKit hack :(
+            style.appendChild(document.createTextNode(""));
+            document.head.appendChild(style);
+            // adding above css to the sheet
+            addCSSRule(style.sheet, ".slimScroll > div", wrapper, 0);
+            addCSSRule(style.sheet, ".slimScroll > div + div", scrollBarContainer, 0);
+            addCSSRule(style.sheet, ".slimScroll > div + div > div", scrollBar, 0);
         };
+        insertCss();
     return {
         useSlimScroll : useSlimScroll
     }

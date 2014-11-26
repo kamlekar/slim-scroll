@@ -1,4 +1,24 @@
-/* custom stylesheet */
+/* Demo css classes */
+.slimScroll {
+    border: 1px solid #CCC;
+    margin-top: 20px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+    width: 380px;
+}
+.wrapper {
+    padding: 5px;
+}
+.scrollBarContainer{
+    background-color: #E1E1E1;
+}
+.scrollBar {
+    background-color: #999999;
+    border-radius: 10px;
+    opacity: 0.5;
+}
 .wrapper.mac + .scrollBarContainer{
     background-color: transparent;
 }
@@ -17,70 +37,3 @@
     -o-user-select: none;
     user-select: none;
 } 
-/* end of custom stylesheet */
-
-/******************************************************/
-/**************** important ***************************/
-/******************************************************/
-
-/* slim scroll attached stylesheet */
-.contentHolder {
-    /* custom css here */
-    border: 1px solid #CCC;
-    margin-top: 20px;
-    /* end of custom css */
-    /* slim scroll necessary css properties */
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-    height: 200px;
-    width: 380px;
-    /* end of slim scroll necessary css properties */
-    /* [end] don't override the above properties here */
-}
-.wrapper {
-    /* custom css here */
-    padding: 5px;
-    /* end of custom css */
-    /* slim scroll necessary css properties */
-    overflow: auto;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    right: -18px;
-    bottom: 0px;
-    padding-right: 8px;
-    /* end of slim scroll necessary css properties */
-    /* [end] don't override the above properties here */
-}
-.scrollBarContainer{
-    /* custom css here */
-    background-color: #E1E1E1;
-    /* end of custom css */
-    /* slim scroll necessary css properties */
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    right: 0px;
-    width: 5px;
-    cursor: pointer;
-    /* end of slim scroll necessary css properties */
-    /* [end] don't override the above properties here */
-}
-.scrollBar {
-    /* custom css here */
-    background-color: #999999;
-    /* end of custom css */
-    /* slim scroll necessary css properties */
-    border-radius: 10px;
-    opacity: 0.5;
-    position: absolute;
-    right: 0px;
-    left: 0px;
-    top: 0px;
-    /* end of slim scroll necessary css properties */
-    /* [end] don't override the above properties here */
-}
-
-/* end of slimscroll attached stylesheet */
-/* [Note]: I suggest to add this important stylesheet below of all stylesheets in your html file */
