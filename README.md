@@ -11,7 +11,6 @@ This plugin lets you design the scroll bar by using simple css properties. It is
 ###Info:
 
 - To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
-
 - Just design the scrollbar as you want by changing the above styles in css.
 
 ###Note: 
@@ -46,7 +45,7 @@ or to add your own defined css styles:
 
 ###Note:
 
-Add some background-color to make the scroll bar visible :)
+Add a background-color to the scroll-bar element's class, to make the scroll bar visible :)
 
 ###How I got this thought:
 
