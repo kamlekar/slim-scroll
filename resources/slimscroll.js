@@ -1,6 +1,4 @@
 var scroll = (function(){
-
-
     var v = [],E = 'e',
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",
         // properties
@@ -21,21 +19,15 @@ var scroll = (function(){
                 z[w] = cE(q.w, h, C);
                 z[S] = cE(q.S + q.a, "", C);
                 z[s] = cE(q.s, "", z[S]);
-
-                
-
                 z.wH = z[w].offsetHeight;
                 z.sH = z[w].scrollHeight;
                 z.sP = (z.wH/z.sH) * 100;
                 // Manually set the height of the scrollbar (in percentage)
                 z.sP1 = z.sP;
-
                 z.rP1 = 100 - z.sP1;
                 z.x = (z.sH - z.wH) * ((z.sP1 - z.sP)/(100 - z.sP));
                 z.sH1 = Math.abs((z.x / (z.rP1)) + (z.sH/100));
-
                 z[s].style.height = z.sP1 + U;
-
                 //store the key 'k' in the container
                 z[w].setAttribute(sK, k);
 
@@ -152,31 +144,37 @@ var scroll = (function(){
             // el.removeEventListener(e, func, false);
         },
         addCSSRule = function(sheet, selector, rules, index) {
-            if("insertRule" in sheet) {
+            if(sheet.insertRule) {
                 sheet.insertRule(selector + "{" + rules + "}", index);
             }
-            else if("addRule" in sheet) {
+            else if(sheet.addRule) {
                 sheet.addRule(selector, rules, index);
             }
         },
         insertCss = function(){
             // Inserting css rules
             // Link: http://davidwalsh.name/add-rules-stylesheets
-            var imp = " !important";
-            var pAbsolute = "position:absolute"+imp;
-            // classes
-            var wrapper = pAbsolute+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";";
-            var scrollBarContainer = pAbsolute+";top:0px"+imp+";bottom:0px"+imp+";right:0px"+imp+";left:auto"+imp+";width:5px"+imp+";cursor:pointer"+imp+";padding-right:0px"+imp+";";
-            var scrollBar = pAbsolute+";top:0px;left:0px;right:0px"+imp+";";
-            //creating a sheet
-            var style = document.createElement('style');
-            // WebKit hack :(
-            style.appendChild(document.createTextNode(""));
-            document.head.appendChild(style);
-            // adding above css to the sheet
-            addCSSRule(style.sheet, ".slimScroll > div", wrapper, 0);
-            addCSSRule(style.sheet, ".slimScroll > div + div", scrollBarContainer, 0);
-            addCSSRule(style.sheet, ".slimScroll > div + div > div", scrollBar, 0);
+            var imp = " !important",
+                pAbsolute = "position:absolute"+imp,
+                // classes
+                wrapper = pAbsolute+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";",
+                scrollBarContainer = pAbsolute+";top:0px"+imp+";bottom:0px"+imp+";right:0px"+imp+";left:auto"+imp+";width:5px"+imp+";cursor:pointer"+imp+";padding-right:0px"+imp+";",
+                scrollBar = pAbsolute+";top:0px;left:0px;right:0px"+imp+";",
+                //creating a sheet
+                style = document.createElement('style');
+            try{
+                // WebKit hack :(
+                style.appendChild(document.createTextNode(""));
+                var head = document.head || document.getElementsByTagName('head')[0];
+                head.appendChild(style);
+                // adding above css to the sheet
+                addCSSRule(style.sheet, ".slimScroll > div", wrapper, 0);
+                addCSSRule(style.sheet, ".slimScroll > div + div", scrollBarContainer, 0);
+                addCSSRule(style.sheet, ".slimScroll > div + div > div", scrollBar, 0);
+            }
+            catch(ex){
+                console.log('Slimscroll fallback classes needed: Add Important css styles as mentioned in the read me file. (Read the "note" in "How to use" section');
+            }
         };
         insertCss();
     return {
