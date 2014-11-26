@@ -21,30 +21,27 @@ Some of the styles in the above css are necessary to let the scroll work.
 
 ###How to use:
 
-Add `slimScroll` class to the elements which need this slim scroll component.
+- Add `slimScroll` class to the elements which need this slim scroll component.
 
 and then:
 
-Method 1:
----------
+#####Method 1:
 
     useSlimScroll(Element);   // 'Element' is Javascript DOM object
 
-Method 2:
----------
+#####Method 2:
 
 or to add your own defined css styles:
 
-    useSlimScroll(Element, {
-        'wrapperClass': '',  /* Add wrapper class here */
+	useSlimScroll(Element, {
+		'wrapperClass': '',  /* Add wrapper class here */
 
-        'scrollBarClass': '',  /* Add scroll bar class here */
+		'scrollBarClass': '',  /* Add scroll bar class here */
 
-        'scrollBarContainerClass': '',  /* Add class to scroll bar container here */
+		'scrollBarContainerClass': '',  /* Add class to scroll bar container here */
 
-        /* You can use the below property to apply different styles to the scrollbar while scrolling. */
-
-        'scrollBarContainerSpecialClass': ''  
+		/* You can use the below property to apply different styles to the scrollbar while scrolling. */
+		'scrollBarContainerSpecialClass': ''  
 	});
 
 ###How I got this thought:
