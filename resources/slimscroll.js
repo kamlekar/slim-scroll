@@ -88,11 +88,9 @@ var scroll = (function(){
 
             i[oT] = i[w][oT];
             i.firstY = e.pageY || event.clientY;
-
             if(!i.reposition){
                 i.reposition = i[s][oT];
             }
-
             currentkey = k;
         },
         moveScroll = function(e){
@@ -113,7 +111,6 @@ var scroll = (function(){
                 i.previousTop = top;   
                 i[w].scrollTop = top * i.sH1;
             }
-
             i[S][cN] = i.E.S;
         },
         endScroll = function(e){
@@ -153,7 +150,8 @@ var scroll = (function(){
         insertCss = function(){
             // Inserting css rules
             // Link: http://davidwalsh.name/add-rules-stylesheets
-            var imp = " !important",
+            var slim = ".slimScroll",
+                imp = " !important",
                 pA = "position:absolute"+imp,
                 // classes
                 w = pA+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";",
@@ -167,14 +165,14 @@ var scroll = (function(){
                 document.head.appendChild(style);
                 var sheet = style.sheet;
                 // adding above css to the sheet
-                addCSSRule(sheet, ".slimScroll > div", w, 0);
-                addCSSRule(sheet, ".slimScroll > div + div", S, 0);
-                addCSSRule(sheet, ".slimScroll > div + div > div", s, 0);
+                addCSSRule(sheet, slim + " > div", w, 0);
+                addCSSRule(sheet, slim + " > div + div", S, 0);
+                addCSSRule(sheet, slim + " > div + div > div", s, 0);
             }
             catch(ex){
                 var head = document.getElementsByTagName('head')[0];
                 head.appendChild(style);
-                style.styleSheet.cssText = ".slimScroll > div {" + w + "} .slimScroll > div + div {" + S + "} .slimScroll > div + div > div {" + s + "}";
+                style.styleSheet.cssText = slim + " > div {" + w + "} " + slim + " > div + div {" + S + "} " + slim + " > div + div > div {" + s + "}";
             }
         }();
     return {
