@@ -26,13 +26,13 @@ and then:
 
 #####Method 1:
 
-    useSlimScroll(Element);   // 'Element' is Javascript DOM object
+    scroll.useSlimScroll(Element);   // 'Element' is Javascript DOM object
 
 #####Method 2:
 
 or to add your own defined css styles:
 
-	useSlimScroll(Element, {
+	scroll.useSlimScroll(Element, {
 		'wrapperClass': '',  /* Add wrapper class here */
 
 		'scrollBarClass': '',  /* Add scroll bar class here */
