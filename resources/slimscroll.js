@@ -154,7 +154,7 @@ var scroll = (function(){
                 imp = " !important",
                 pA = "position:absolute"+imp,
                 // classes
-                w = pA+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";",
+                w = pA+";overflow:auto"+imp+";left:0px;top:0px"+imp+";right:-18px;bottom:0px"+imp+";padding-right:8px"+imp+";",
                 S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px;left:auto;width:5px;cursor:pointer"+imp+";padding-right:0px"+imp+";",
                 s = pA+";background-color:#999;top:0px;left:0px;right:0px;",
                 //creating a sheet
