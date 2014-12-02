@@ -48,17 +48,17 @@ or to add your own defined css styles:
 
 ###Explanation of above properties:
 
-- **wrapperClass ** (*type - "string"*) : Mention wrapper class here.
+- **wrapperClass** (*type - "string"*) : Mention wrapper class here.
 - **scrollBarClass** (*type - "string"*) : Mention scroll bar class here.
 - **scrollBarContainerClass** (*type - "string"*) : Mention scroll bar container class here.
 - **scrollBarContainerSpecialClass** (*type - "string"*) : This property is used to mention a class which will be applied only when the user is scrolling the content. Could be helpful while applying animations to the scroll bar.
 - **scrollBarMinHeight** (*type - "Integer"*) : Used to mention minimum scroll bar height here (without pixel unit)
-- **scrollBarFixedHeight** (*type - "Integer"*) : Used to mention scroll bar fixed height (without pixel unit). This makes sure to show the scroll bar height fixed even when content inside the container increased.
+- **scrollBarFixedHeight** (*type - "Integer"*) : Used to mention scroll bar fixed height (without pixel unit). This makes sure to show the scroll bar height fixed even when content inside the container is increased.
 
 ###Note:
 
+- Usage of the above mentioned properties is optional.
 - Add a background-color to the scroll-bar element's class, to make the scroll bar visible :)
-- Usage of the above mentioned properties is optional or as needed.
 
 
 ###How I got this thought:
