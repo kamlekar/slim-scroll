@@ -31,12 +31,9 @@ var scroll = (function(){
                 i.sbh = i.sP * i.wH/100;
                 // Manually set the height of the scrollbar (in percentage)
                 // if user hasn't provided the fixed scroll height value
-                if(!q.sH){
-                    i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
-                }
-                else{
-                    i.sP1 = q.sH/i.wH * 100;
-                }
+                if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
+                else i.sP1 = q.sH/i.wH * 100;
+                
                 i.rP1 = 100 - i.sP1;
                 i.x = (i.sH - i.wH) * ((i.sP1 - i.sP)/(100 - i.sP));
                 i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
@@ -75,15 +72,11 @@ var scroll = (function(){
             if(!k) return;
             var i = v[k],q = i.E;
 
-            if(!i || p === i[S]){return;}
+            if(!i || p === i[S]) return;
             var eY = e.pageY || event.clientY,
                 top = ((eY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
-            if(top > i.rP1){
-                top = i.rP1;
-            }
-            else if(top < 0){
-                top = 0;
-            }
+            if(top > i.rP1) top = i.rP1;
+            else if(top < 0) top = 0;
             i[s].style.top = top + U;
             i[w].scrollTop = top * i.sH1;
             addClass(i[S], q.S + q.a);
@@ -93,11 +86,8 @@ var scroll = (function(){
             // Link: http://stackoverflow.com/a/3171348
             var sel = window.getSelection ? window.getSelection() : document.selection;
             if (sel) {
-                if (sel.removeAllRanges) {
-                    sel.removeAllRanges();
-                } else if (sel.empty) {
-                    sel.empty();
-                }
+                if (sel.removeAllRanges) sel.removeAllRanges();
+                else if (sel.empty) sel.empty();
             }
             var e = e || event,
                 el = e[cT] || e[sE],
@@ -108,9 +98,7 @@ var scroll = (function(){
 
             i[oT] = i[w][oT];
             i.firstY = e.pageY || event.clientY;
-            if(!i.reposition){
-                i.reposition = i[s][oT];
-            }
+            if(!i.reposition) i.reposition = i[s][oT];
             currentkey = k;
         },
         moveScroll = function(e){
@@ -140,11 +128,11 @@ var scroll = (function(){
         },
         doScroll = function(e){
             var e = e || event,
-                k = getAttr((e[cT] || e[sE]), sK),i = v[k], q = i.E;
-            if(!i){return;}
+                k = getAttr((e[cT] || e[sE]), sK),i = v[k];
+            if(!i) return;
+            var q = i.E;
             addClass(i[S], q.S);
-            var scrollTop = i[w].scrollTop;
-            i[s].style.top = scrollTop/i.sH1 + U;
+            i[s].style.top = i[w].scrollTop/i.sH1 + U;
             addClass(i[S], q.S + q.a);
         },
         addEvent = function(e, el, func){
@@ -156,12 +144,8 @@ var scroll = (function(){
             // el.removeEventListener(e, func, false);
         },
         addCSSRule = function(S, s, r, i) {
-            if(S.insertRule) {
-                S.insertRule(s + "{" + r + "}", i);
-            }
-            else if(S.addRule) {
-                S.addRule(s, r, i);
-            }
+            if(S.insertRule) S.insertRule(s + "{" + r + "}", i);
+            else if(S.addRule) S.addRule(s, r, i);
         },
         insertCss = function(){
             // Inserting css rules
@@ -172,7 +156,7 @@ var scroll = (function(){
                 // classes
                 w = pA+";overflow:auto"+imp+";left:0px"+imp+";top:0px"+imp+";right:-18px"+imp+";bottom:0px"+imp+";padding-right:8px"+imp+";",
                 S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px"+imp+";left:auto"+imp+";width:5px"+imp+";cursor:pointer"+imp+";padding-right:0px"+imp+";",
-                s = pA+";top:0px;left:0px;right:0px"+imp+";",
+                s = pA+";background-color:#999;top:0px;left:0px;right:0px"+imp+";",
                 //creating a sheet
                 style = document.createElement('style');
             try{

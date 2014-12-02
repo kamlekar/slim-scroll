@@ -1,8 +1,7 @@
-Slim-scroll (_Javascript scroll plugin_)
+Slim-scroll (_JavaScript Scroll Plugin_)
 ========================================
 
-Slim scroll is a replacement of default scrollbar provided by browsers.
-This plugin lets you design the scroll bar by using simple css properties. It is created using vanilla javascript and css.
+Slim scroll is a replacement of default scrollbar provided by browsers. This plugin lets you design the scroll-bar by using simple css properties. It is created using vanilla javascript and css.
 
 **Tested on**: IE8+, Chrome and Firefox.
 
@@ -53,7 +52,8 @@ or to add your own defined css styles:
 ###Note:
 
 - Usage of the above mentioned properties is optional.
-- Add a background-color to the scroll-bar element's class, to make the scroll bar visible :)
+- Add [higher specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) css to override the custom styles which are being applied by the plugin.
+- Don't override the styles which are given highest specificity (`!important`) by the plugin (_those styles are necessary to make this scroll plugin work_).
 
 
 ###How I got this thought:
@@ -64,4 +64,4 @@ The solution was simple but that is how I got this thought :).
 
 ---------------------------------
 
-If you find any issues, please file them in issues section.
+If you find any issue(s), please file [here](https://github.com/venkateshwar/slim-scroll/issues).
