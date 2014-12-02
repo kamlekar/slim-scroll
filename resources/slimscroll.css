@@ -9,17 +9,23 @@
     width: 380px;
 }
 
-/* custom stylings */
-.wrapper {
+.slimScroll > div{
     padding: 5px;
 }
-.scrollBarContainer{
+
+.slimScroll > div + div{
+    padding: 0px;
     background-color: #E1E1E1;
 }
-.scrollBar {
+
+.slimScroll > div + div > div{
     background-color: #999999;
-    border-radius: 10px;
     opacity: 0.5;
+}
+
+/* custom stylings */
+.scrollBar{
+    border-radius: 10px;
 }
 .wrapper.mac + .scrollBarContainer{
     background-color: transparent;

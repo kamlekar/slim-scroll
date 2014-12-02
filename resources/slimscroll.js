@@ -2,64 +2,67 @@ var scroll = (function(){
     var v = [],
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",
         // properties
-        cN = "className",oT = "offsetTop",pE = "parentElement",pes= "previousElementSibling", 
+        oT = "offsetTop",pE = "parentElement",pes= "previousElementSibling", 
         iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
         // IE8 properties 
-        // (Dev note: remove these variables from all over the code to exclude IE8 compatibility)
+        // (Dev note: remove below variables from all over the code to exclude IE8 compatibility)
         pN = "parentNode",pS = "previousSibling",sE = "srcElement",
         // Initial function
         useSlimScroll = function(C, p){
             if(C.offsetHeight < C.scrollHeight){
-                var h = C[iH],k = v.length, z = v[k] = {}, q = z.E = {};
+                var h = C[iH],k = v.length, i = v[k] = {}, q = i.E = {};
                 // setting user defined classes
                 p = p || {};
-                q.w = p.wrapperClass || w;
-                q.s = p.scrollBarClass || s;
-                q.S = p.scrollBarContainerClass || S;
-                q.a = " " + (p.scrollBarContainerSpecialClass || a);
+                q.w = p.wrapperClass || "";
+                q.s = p.scrollBarClass || "";
+                q.S = p.scrollBarContainerClass || "";
+                q.a = p.scrollBarContainerSpecialClass ? " " + p.scrollBarContainerSpecialClass : "";
                 q.mH = p.scrollBarMinHeight || 25;
                 q.sH = p.scrollBarFixedHeight;  // could be undefined
 
                 C[iH] = "";
-                z[w] = cE(q.w, h, C);
-                z[S] = cE(q.S + q.a, "", C);
-                z[s] = cE(q.s, "", z[S]);
-                z.wH = z[w].offsetHeight;
-                z.sH = z[w].scrollHeight;
-                z.sP = (z.wH/z.sH) * 100;
-                // z.sbh is scroll bar height in pixels without pixel unit.
-                z.sbh = z.sP * z.wH/100;
+                i[w] = cE(q.w, h, C);
+                i[S] = cE(q.S + q.a, "", C);
+                i[s] = cE(q.s, "", i[S]);
+                i.wH = i[w].offsetHeight;
+                i.sH = i[w].scrollHeight;
+                i.sP = (i.wH/i.sH) * 100;
+                // i.sbh is scroll bar height in pixels without pixel unit.
+                i.sbh = i.sP * i.wH/100;
                 // Manually set the height of the scrollbar (in percentage)
                 // if user hasn't provided the fixed scroll height value
                 if(!q.sH){
-                    z.sP1 = z.sbh < q.mH? (q.mH/z.wH * 100): z.sP;
+                    i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
                 }
                 else{
-                    z.sP1 = q.sH/z.wH * 100;
+                    i.sP1 = q.sH/i.wH * 100;
                 }
-                z.rP1 = 100 - z.sP1;
-                z.x = (z.sH - z.wH) * ((z.sP1 - z.sP)/(100 - z.sP));
-                z.sH1 = Math.abs((z.x / (z.rP1)) + (z.sH/100));
-                z[s].style.height = z.sP1 + U;
+                i.rP1 = 100 - i.sP1;
+                i.x = (i.sH - i.wH) * ((i.sP1 - i.sP)/(100 - i.sP));
+                i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
+                i[s].style.height = i.sP1 + U;
                 //store the key 'k' in the container
-                z[w].setAttribute(sK, k);
+                i[w].setAttribute(sK, k);
 
                 // Attaching mouse events
-                addEvent('mousedown', z[s], beginScroll);
-                addEvent('click', z[S], setScroll);
+                addEvent('mousedown', i[s], beginScroll);
+                addEvent('click', i[S], setScroll);
 
                 // For scroll
-                addEvent('scroll', z[w], doScroll);
+                addEvent('scroll', i[w], doScroll);
             }
         },
         // Start of private functions
         getAttr = function(e, p){
-            if(!e){return;}
+            if(!e) return;
             return e.getAttribute(p);            
+        },
+        addClass = function(e, c){
+            if(c.length) e.className = c;
         },
         cE = function(c, h, p){
             var d = document.createElement('div');
-            d[cN] = c;
+            addClass(d, c);
             d[iH] = h;
             p.appendChild(d);
             return d;
@@ -67,7 +70,10 @@ var scroll = (function(){
         setScroll = function(e){
             var e = e || event,el = e.target || event[sE],
                 p = el[pE] || el[pN],
-                k = getAttr(el[pS] || el[pes], sK),i = v[k];
+                k = getAttr(el[pS] || el[pes], sK);
+
+            if(!k) return;
+            var i = v[k],q = i.E;
 
             if(!i || p === i[S]){return;}
             var eY = e.pageY || event.clientY,
@@ -80,7 +86,7 @@ var scroll = (function(){
             }
             i[s].style.top = top + U;
             i[w].scrollTop = top * i.sH1;
-            i[S][cN] = i.E.S + i.E.a;
+            addClass(i[S], q.S + q.a);
         },
         beginScroll = function(e){
             // removing selected text
@@ -109,41 +115,37 @@ var scroll = (function(){
         },
         moveScroll = function(e){
             var e = e || event,
-                k = currentkey,i = v[k],
-                eY = e.pageY || event.clientY,
+                k = currentkey,i = v[k],q = i.E,
+                eY = e.pageY || e.clientY,
                 top = (i.reposition + eY - i.firstY)/i.wH * 100;
 
-            if(i.rP1 < top){
-                top = i.rP1;
-            }
-            if(!i.previousTop){
-                i.previousTop = top + 1;
-            }
+            if(i.rP1 < top) top = i.rP1;
+            if(!i.previousTop) i.previousTop = top + 1;
             var blnThreshold = top >= 0 && i.firstY > i.offsetTop;
             if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w].scrollTop + i.wH !== i.sH))){
                 i[s].style.top = top + U;
                 i.previousTop = top;   
                 i[w].scrollTop = top * i.sH1;
             }
-            i[S][cN] = i.E.S;
+            addClass(i[S], q.S);
         },
         endScroll = function(e){
-            var e = e || event,k = currentkey,i = v[k]; 
+            var e = e || event,k = currentkey,i = v[k], q = i.E; 
 
             removeEvent('mousemove', document);
             removeEvent('mouseup', document);
 
             i.reposition = 0;
-            i[S][cN] = i.E.S + i.E.a;
+            addClass(i[S], q.S + q.a);
         },
         doScroll = function(e){
             var e = e || event,
-                k = getAttr((e[cT] || e[sE]), sK),i = v[k];
+                k = getAttr((e[cT] || e[sE]), sK),i = v[k], q = i.E;
             if(!i){return;}
-            i[S][cN] = i.E.S;
+            addClass(i[S], q.S);
             var scrollTop = i[w].scrollTop;
             i[s].style.top = scrollTop/i.sH1 + U;
-            i[S][cN] = i.E.S + i.E.a;
+            addClass(i[S], q.S + q.a);
         },
         addEvent = function(e, el, func){
             el['on' + e] = func;
