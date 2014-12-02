@@ -2,18 +2,23 @@ var scroll = (function(){
     var v = [],
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",
         // properties
-        cN = "className",oT = "offsetTop",pE = "parentElement", pN = "parentNode",
-        pS = "previousSibling", sE = "srcElement",iH = "innerHTML",
-        cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
-
+        cN = "className",oT = "offsetTop",pE = "parentElement",pes= "previousElementSibling", 
+        iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
+        // IE8 properties 
+        // (Dev note: remove these variables from all over the code to exclude IE8 compatibility)
+        pN = "parentNode",pS = "previousSibling",sE = "srcElement",
+        // Initial function
         useSlimScroll = function(C, p){
             if(C.offsetHeight < C.scrollHeight){
                 var h = C[iH],k = v.length, z = v[k] = {}, q = z.E = {};
                 // setting user defined classes
-                q.w = p && p.wrapperClass ? p.wrapperClass : w;
-                q.s = p && p.scrollBarClass ? p.scrollBarClass : s;
-                q.S = p && p.scrollBarContainerClass ? p.scrollBarContainerClass : S;
-                q.a = p && p.scrollBarContainerSpecialClass ? " " + p.scrollBarContainerSpecialClass : " " + a;
+                p = p || {};
+                q.w = p.wrapperClass || w;
+                q.s = p.scrollBarClass || s;
+                q.S = p.scrollBarContainerClass || S;
+                q.a = " " + (p.scrollBarContainerSpecialClass || a);
+                q.mH = p.scrollBarMinHeight || 25;
+                q.sH = p.scrollBarFixedHeight;  // could be undefined
 
                 C[iH] = "";
                 z[w] = cE(q.w, h, C);
@@ -22,8 +27,16 @@ var scroll = (function(){
                 z.wH = z[w].offsetHeight;
                 z.sH = z[w].scrollHeight;
                 z.sP = (z.wH/z.sH) * 100;
+                // z.sbh is scroll bar height in pixels without pixel unit.
+                z.sbh = z.sP * z.wH/100;
                 // Manually set the height of the scrollbar (in percentage)
-                z.sP1 = z.sP;
+                // if user hasn't provided the fixed scroll height value
+                if(!q.sH){
+                    z.sP1 = z.sbh < q.mH? (q.mH/z.wH * 100): z.sP;
+                }
+                else{
+                    z.sP1 = q.sH/z.wH * 100;
+                }
                 z.rP1 = 100 - z.sP1;
                 z.x = (z.sH - z.wH) * ((z.sP1 - z.sP)/(100 - z.sP));
                 z.sH1 = Math.abs((z.x / (z.rP1)) + (z.sH/100));
@@ -39,6 +52,7 @@ var scroll = (function(){
                 addEvent('scroll', z[w], doScroll);
             }
         },
+        // Start of private functions
         getAttr = function(e, p){
             if(!e){return;}
             return e.getAttribute(p);            
@@ -53,7 +67,7 @@ var scroll = (function(){
         setScroll = function(e){
             var e = e || event,el = e.target || event[sE],
                 p = el[pE] || el[pN],
-                k = getAttr(el[pS], sK),i = v[k];
+                k = getAttr(el[pS] || el[pes], sK),i = v[k];
 
             if(!i || p === i[S]){return;}
             var eY = e.pageY || event.clientY,
