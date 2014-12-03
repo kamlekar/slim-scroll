@@ -7,7 +7,7 @@ Slim scroll is a replacement of default scrollbar provided by browsers. This plu
 
 **Tested on**: IE8+, Chrome and Firefox.
 
-##[Demo](demo.html)
+##[Demo1](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 
 ###How to use:
 - To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
