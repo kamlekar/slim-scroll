@@ -7,12 +7,13 @@ Slim scroll is a replacement of default scrollbar provided by browsers. This plu
 
 **Tested on**: IE8+, Chrome and Firefox.
 
-##[Demo1](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
+##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 
 ###How to use:
 - To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
-- Just design the scrollbar as you want by applying css classes as explained below.
 - Add `slimScroll` class to the elements which need this slim scroll component.
+- Apply height to the container in fixed units or percentage.
+- Just design the scrollbar as you want by applying css classes as explained below.
 
 and then:
 
@@ -47,9 +48,13 @@ or to add your own defined css styles:
 - **scrollBarMinHeight** (*type - "Integer"*) : Used to mention minimum scroll bar height here (without pixel unit)
 - **scrollBarFixedHeight** (*type - "Integer"*) : Used to mention scroll bar fixed height (without pixel unit). This makes sure to show the scroll bar height fixed even when content inside the container is increased.
 
+###To make this work on height resize:
+
+    window.onresize = scroll.setValues;  // pure javascript example.
+
 ###Note:
 
-- Usage of the above mentioned properties is optional.
+- Usage of the above mentioned properties is optional or as per need.
 - Add [higher specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) css to override the custom styles which are being applied by the plugin.
 - Don't override the styles which are given highest specificity (`!important`) by the plugin (_those styles are necessary to make this scroll plugin work_).
 

@@ -24,20 +24,7 @@ var scroll = (function(){
                 i[w] = cE(q.w, h, C);
                 i[S] = cE(q.S + q.a, "", C);
                 i[s] = cE(q.s, "", i[S]);
-                i.wH = i[w].offsetHeight;
-                i.sH = i[w].scrollHeight;
-                i.sP = (i.wH/i.sH) * 100;
-                // i.sbh is scroll bar height in pixels without pixel unit.
-                i.sbh = i.sP * i.wH/100;
-                // Manually set the height of the scrollbar (in percentage)
-                // if user hasn't provided the fixed scroll height value
-                if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
-                else i.sP1 = q.sH/i.wH * 100;
-                
-                i.rP1 = 100 - i.sP1;
-                i.x = (i.sH - i.wH) * ((i.sP1 - i.sP)/(100 - i.sP));
-                i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
-                i[s].style.height = i.sP1 + U;
+                setValues(k);
                 //store the key 'k' in the container
                 i[w].setAttribute(sK, k);
 
@@ -48,6 +35,35 @@ var scroll = (function(){
                 // For scroll
                 addEvent('scroll', i[w], doScroll);
             }
+        },
+        setValues = function(k){
+            if(typeof k === "number"){
+                assignValues(k);
+            }
+            else{
+                for(var j=0;j<v.length;j++){
+                    assignValues(j);
+                }
+            }
+        },
+        assignValues = function(k){
+            var i = v[k], q = i.E;
+            i.wH = (i[w][pE] || i[w][pN]).offsetHeight;
+            i.sH = i[w].scrollHeight;
+            i.sP = (i.wH/i.sH) * 100;
+            // i.sbh is scroll bar height in pixels without pixel unit.
+            i.sbh = i.sP * i.wH/100;
+            // Manually set the height of the scrollbar (in percentage)
+            // if user hasn't provided the fixed scroll height value
+            if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
+            else i.sP1 = q.sH/i.wH * 100;
+            
+            i.rP1 = 100 - i.sP1;
+            i.x = (i.sH - i.wH) * ((i.sP1 - i.sP)/(100 - i.sP));
+            i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
+            i[s].style.height = i.sP1 + U;
+            
+            i.reposition = i[s][oT]
         },
         // Start of private functions
         getAttr = function(e, p){
@@ -165,17 +181,18 @@ var scroll = (function(){
                 document.head.appendChild(style);
                 var sheet = style.sheet;
                 // adding above css to the sheet
-                addCSSRule(sheet, slim + " > div", w, 0);
-                addCSSRule(sheet, slim + " > div + div", S, 0);
-                addCSSRule(sheet, slim + " > div + div > div", s, 0);
+                addCSSRule(sheet, slim + ">div", w, 0);
+                addCSSRule(sheet, slim + ">div+div", S, 0);
+                addCSSRule(sheet, slim + ">div+div>div", s, 0);
             }
             catch(ex){
                 var head = document.getElementsByTagName('head')[0];
                 head.appendChild(style);
-                style.styleSheet.cssText = slim + " > div {" + w + "} " + slim + " > div + div {" + S + "} " + slim + " > div + div > div {" + s + "}";
+                style.styleSheet.cssText = slim + ">div{"+w+"}"+slim+">div+div{"+S+"}"+slim+">div+div>div{"+s+"}";
             }
         }();
     return {
-        useSlimScroll : useSlimScroll
+        useSlimScroll : useSlimScroll,
+        setValues : setValues
     }
 })();

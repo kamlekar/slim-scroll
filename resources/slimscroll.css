@@ -1,11 +1,14 @@
 /* Demo css classes */
+html, body{
+    height: 100%;
+}
 .slimScroll {
     border: 1px solid #CCC;
     margin-top: 20px;
     display: inline-block;
     overflow: hidden;
     position: relative;
-    height: 200px;
+    height: 200px; /* or give percentage value */
     width: 380px;
 }
 
