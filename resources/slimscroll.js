@@ -48,18 +48,18 @@ var scroll = (function(){
         },
         assignValues = function(k){
             var i = v[k], q = i.E;
-            i.wH = (i[w][pE] || i[w][pN]).offsetHeight;
+            i.h = i[S].offsetHeight;
             i.sH = i[w].scrollHeight;
-            i.sP = (i.wH/i.sH) * 100;
+            i.sP = (i.h/i.sH) * 100;
             // i.sbh is scroll bar height in pixels without pixel unit.
-            i.sbh = i.sP * i.wH/100;
+            i.sbh = i.sP * i.h/100;
             // Manually set the height of the scrollbar (in percentage)
             // if user hasn't provided the fixed scroll height value
-            if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.wH * 100): i.sP;
-            else i.sP1 = q.sH/i.wH * 100;
+            if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.h * 100): i.sP;
+            else i.sP1 = q.sH/i.h * 100;
             
             i.rP1 = 100 - i.sP1;
-            i.x = (i.sH - i.wH) * ((i.sP1 - i.sP)/(100 - i.sP));
+            i.x = (i.sH - i.h) * ((i.sP1 - i.sP)/(100 - i.sP));
             i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
             i[s].style.height = i.sP1 + U;
             
@@ -90,7 +90,7 @@ var scroll = (function(){
 
             if(!i || p === i[S]) return;
             var eY = e.pageY || event.clientY,
-                top = ((eY - (i[w][pE] || i[w][pN])[oT])/i.wH * 100) - i.sP1/2;
+                top = ((eY - (i[w][pE] || i[w][pN])[oT])/i.h * 100) - i.sP1/2;
             if(top > i.rP1) top = i.rP1;
             else if(top < 0) top = 0;
             i[s].style.top = top + U;
@@ -121,12 +121,12 @@ var scroll = (function(){
             var e = e || event,
                 k = currentkey,i = v[k],q = i.E,
                 eY = e.pageY || e.clientY,
-                top = (i.reposition + eY - i.firstY)/i.wH * 100;
+                top = (i.reposition + eY - i.firstY)/i.h * 100;
 
             if(i.rP1 < top) top = i.rP1;
             if(!i.previousTop) i.previousTop = top + 1;
             var blnThreshold = top >= 0 && i.firstY > i.offsetTop;
-            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w].scrollTop + i.wH !== i.sH))){
+            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w].scrollTop + i.h !== i.sH))){
                 i[s].style.top = top + U;
                 i.previousTop = top;   
                 i[w].scrollTop = top * i.sH1;
