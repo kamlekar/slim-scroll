@@ -2,6 +2,9 @@
 html, body{
     height: 100%;
 }
+:focus{
+    outline: none;
+}
 .slimScroll {
     border: 1px solid #CCC;
     margin-top: 20px;
@@ -11,7 +14,6 @@ html, body{
     height: 200px; /* or give percentage value */
     width: 380px;
 }
-
 .slimScroll > div{
     padding: 5px;
 }

@@ -28,10 +28,13 @@ var scroll = (function(){
                 //store the key 'k' in the container
                 i[w].setAttribute(sK, k);
 
+                if(p.keepFocus){
+                    i[w].setAttribute('tabindex', '-1');
+                    i[w].focus();
+                }
                 // Attaching mouse events
                 addEvent('mousedown', i[s], beginScroll);
                 addEvent('click', i[S], setScroll);
-
                 // For scroll
                 addEvent('scroll', i[w], doScroll);
             }

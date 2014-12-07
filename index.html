@@ -14,13 +14,15 @@
                     'wrapperClass': 'wrapper unselectable mac',
                     'scrollBarClass': 'scrollBar',
                     'scrollBarContainerClass': 'scrollBarContainer',
-                    'scrollBarContainerSpecialClass': 'animate'
+                    'scrollBarContainerSpecialClass': 'animate',
+                    'keepFocus' : true
                 });
                 scroll.useSlimScroll(element[1], {
                     'wrapperClass': 'wrapper',
                     'scrollBarClass': 'scrollBar',
                     'scrollBarContainerClass': 'scrollBarContainer',
-                    'scrollBarContainerSpecialClass': ''
+                    'scrollBarContainerSpecialClass': '',
+                    // 'keepFocus' : true
                 });
                 window.onresize = scroll.setValues;
             }

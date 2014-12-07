@@ -37,6 +37,8 @@ or to add your own defined css styles:
       'scrollBarMinHeight': '',
 
       'scrollBarFixedHeight': '',
+
+      'keepFocus': true/false
     });
 
 ###Explanation of above properties:
@@ -47,6 +49,7 @@ or to add your own defined css styles:
 - **scrollBarContainerSpecialClass** (*type - "string"*) : This property is used to mention a class which will be applied only when the user is scrolling the content. Could be helpful while applying animations to the scroll bar.
 - **scrollBarMinHeight** (*type - "Integer"*) : Used to mention minimum scroll bar height here (without pixel unit)
 - **scrollBarFixedHeight** (*type - "Integer"*) : Used to mention scroll bar fixed height (without pixel unit). This makes sure to show the scroll bar height fixed even when content inside the container is increased.
+- **keepFocus** (*type - "Boolean"*) : Used to focus the container.
 
 ###To make this work on height resize:
 
