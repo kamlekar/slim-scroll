@@ -11,35 +11,22 @@ html, body{
     display: inline-block;
     overflow: hidden;
     position: relative;
-    height: 200px; /* or give percentage value */
+    height: 200px;
     width: 380px;
-}
-.slimScroll > div{
-    padding: 5px;
-}
-
-.slimScroll > div + div{
-    padding: 0px;
-    background-color: #E1E1E1;
-}
-
-.slimScroll > div + div > div{
-    background-color: #000;
-    opacity: 0.5;
 }
 
 /* custom stylings */
-.scrollBar{
-    border-radius: 10px;
+.wrapper, .scroll-wrapper {
+    padding: 5px;
 }
-.wrapper.mac + .scrollBarContainer{
+.scroll-wrapper.mac + .scrollBarContainer{
     background-color: transparent;
 }
-.scrollBarContainer.animate .scrollBar{
+.scrollBarContainer.animate .scroll{
     transition: 2s opacity ease;
     opacity: 0;
 }
-.scrollBarContainer:hover .scrollBar{
+.scrollBarContainer:hover .scroll{
     opacity: 0.5;
     transition: none;
 }
@@ -50,3 +37,20 @@ html, body{
     -o-user-select: none;
     user-select: none;
 } 
+
+.scroll{
+    border-radius: 10px;
+}
+.wrapper + .scrollBarContainer{
+    background-color: #eee9ee;
+}
+.scrollBarContainer .scrollBar {
+    background-color: #60F509;
+    border-radius: 10px;
+    opacity: 0.5;
+}
+.scroll-wrap + div .scroll-bar{
+    background-color: #14D1E0;
+}
+
+
