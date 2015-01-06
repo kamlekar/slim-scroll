@@ -10,6 +10,7 @@ var scroll = (function(){
         // Initial function
         useSlimScroll = function(C, p){
             if(C.offsetHeight < C.scrollHeight){
+            	insertCss();
                 var h = C[iH],k = v.length, i = v[k] = {}, q = i.E = {};
                 // setting user defined classes
                 p = p || {};
@@ -40,14 +41,10 @@ var scroll = (function(){
             }
         },
         setValues = function(k){
-            if(typeof k === "number"){
-                assignValues(k);
-            }
-            else{
-                for(var j=0;j<v.length;j++){
+            if(typeof k === "number")assignValues(k);            
+            else
+                for(var j=0;j<v.length;j++)
                     assignValues(j);
-                }
-            }
         },
         assignValues = function(k){
             var i = v[k], q = i.E;
@@ -193,7 +190,7 @@ var scroll = (function(){
                 head.appendChild(style);
                 style.styleSheet.cssText = slim + ">div{"+w+"}"+slim+">div+div{"+S+"}"+slim+">div+div>div{"+s+"}";
             }
-        }();
+        };
     return {
         useSlimScroll : useSlimScroll,
         setValues : setValues
