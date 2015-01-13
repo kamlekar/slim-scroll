@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>demo</title>
+		<style>
+			#main {
+			    width: 100px;
+			    height: 100px;
+			}
+			.main {
+			    background-color: red;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="main" id="main" custom-attr="1"></div>
+		<script>
+			window.onload = function(){
+				var main = document.getElementById('main');
+				main.setAttribute('custom-attr', '1');
+				var style = document.createElement('style');
+				// WebKit hack :(
+				try {
+				    style.appendChild(document.createTextNode(""));
+				} catch (ex) {}
+
+				var head = document.head || document.getElementsByTagName('head')[0];
+				head.insertBefore(style, (head.hasChildNodes()) ? head.children[0] : null);
+				var sheet = style.sheet;
+				var dynamicRule = "[custom-attr]";
+				var dynamicStyle = "background-color:green;";
+				if (sheet){
+					if(sheet.insertRule) {
+					    sheet.insertRule(dynamicRule + "{" + dynamicStyle + "}", 0);
+					} else if (sheet.addRule) {
+					    sheet.addRule(dynamicRule, dynamicStyle, 0);
+					}
+				} 
+				else {
+				    style.styleSheet.cssText = dynamicRule + "{" + dynamicStyle + "}";
+				}
+			}
+		</script>
+	</body>
+</html>

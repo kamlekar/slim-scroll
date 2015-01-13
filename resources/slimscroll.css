@@ -24,11 +24,13 @@ html, body{
 }
 .scrollBarContainer.animate .scroll{
     transition: 2s opacity ease;
+    -ms-transition: 2s opacity ease;
     opacity: 0;
 }
 .scrollBarContainer:hover .scroll{
     opacity: 0.5;
     transition: none;
+    -ms-transition: none;
 }
 .unselectable {
     -webkit-user-select: none;
@@ -44,12 +46,12 @@ html, body{
 .wrapper + .scrollBarContainer{
     background-color: #eee9ee;
 }
-.scrollBarContainer .scrollBar {
+.scrollBar {
     background-color: #60F509;
     border-radius: 10px;
     opacity: 0.5;
 }
-.scroll-wrap + div .scroll-bar{
+.scroll-bar{
     background-color: #14D1E0;
 }
 

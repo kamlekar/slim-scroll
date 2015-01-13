@@ -10,6 +10,7 @@ var scroll = (function(){
         // Initial function
         useSlimScroll = function(C, p){
             if(C.offsetHeight < C.scrollHeight){
+                setAttr(C, 'data-slimscroll', '1');
             	insertCss();
                 var h = C[iH],k = v.length, i = v[k] = {}, q = i.E = {};
                 // setting user defined classes
@@ -25,12 +26,13 @@ var scroll = (function(){
                 i[w] = cE(q.w, h, C);
                 i[S] = cE(q.S + q.a, "", C);
                 i[s] = cE(q.s, "", i[S]);
+                setAttr(i[s], 'data-scrollbar', '1');
                 setValues(k);
                 //store the key 'k' in the container
-                i[w].setAttribute(sK, k);
+                setAttr(i[w], sK, k);
 
                 if(p.keepFocus){
-                    i[w].setAttribute('tabindex', '-1');
+                    setAttr(i[w], 'tabindex', '-1');
                     i[w].focus();
                 }
                 // Attaching mouse events
@@ -66,6 +68,9 @@ var scroll = (function(){
             i.reposition = i[s][oT]
         },
         // Start of private functions
+        setAttr = function(e, p, v){
+            e.setAttribute(p,v);
+        },
         getAttr = function(e, p){
             if(!e) return;
             return e.getAttribute(p);            
@@ -164,9 +169,12 @@ var scroll = (function(){
             else if(S.addRule) S.addRule(s, r, i);
         },
         insertCss = function(){
+            if(v.inserted){
+                return;
+            }
             // Inserting css rules
             // Link: http://davidwalsh.name/add-rules-stylesheets
-            var slim = ".slimScroll",
+            var slim = "[data-slimscroll]",
                 imp = " !important",
                 pA = "position:absolute"+imp,
                 // classes
@@ -174,22 +182,29 @@ var scroll = (function(){
                 S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px;left:auto;width:5px;cursor:pointer"+imp+";padding-right:0px"+imp+";",
                 s = pA+";background-color:#999;top:0px;left:0px;right:0px;",
                 //creating a sheet
-                style = document.createElement('style');
+                style = document.createElement('style'),
+                scrollBar = "[data-scrollbar]";
             try{
                 // WebKit hack :(
                 style.appendChild(document.createTextNode(""));
-                document.head.appendChild(style);
-                var sheet = style.sheet;
-                // adding above css to the sheet
-                addCSSRule(sheet, slim + ">div", w, 0);
-                addCSSRule(sheet, slim + ">div+div", S, 0);
-                addCSSRule(sheet, slim + ">div+div>div", s, 0);
+            }catch(ex){}
+            
+            var head =  document.head || document.getElementsByTagName('head')[0];
+                
+            // adding above css to the sheet
+            head.insertBefore(style, (head.hasChildNodes())
+                                ? head.childNodes[0]
+                                : null);
+            var sheet = style.sheet;
+            if(sheet){                
+                addCSSRule(sheet, slim+">div", w, 0);
+                addCSSRule(sheet, slim+">div+div", S, 0);
+                addCSSRule(sheet, scrollBar, s, 0);
             }
-            catch(ex){
-                var head = document.getElementsByTagName('head')[0];
-                head.appendChild(style);
-                style.styleSheet.cssText = slim + ">div{"+w+"}"+slim+">div+div{"+S+"}"+slim+">div+div>div{"+s+"}";
+            else{
+                style.styleSheet.cssText = slim+">div{"+w+"}"+slim+">div+div"+"{"+S+"}"+slim+">div+div>div{"+s+"}";
             }
+            v.inserted = true;
         };
     return {
         useSlimScroll : useSlimScroll,

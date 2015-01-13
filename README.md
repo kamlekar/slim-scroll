@@ -11,9 +11,9 @@ Slim scroll is a replacement of default scrollbar provided by browsers. This plu
 
 ###How to use:
 - To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
-- Add `slimScroll` class to the elements which need this slim scroll component.
 - Apply height to the container in fixed units or percentage.
 - Just design the scrollbar as you want by applying css classes as explained below.
+- [In IE8] Apply high specificity to override normal styles given to the scroll bar.
 
 and then:
 
