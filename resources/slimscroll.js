@@ -1,6 +1,6 @@
 var scroll = (function(){
     var v = [],
-        w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",
+        w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
         // properties
         oT = "offsetTop",pE = "parentElement",pes= "previousElementSibling", 
         iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
@@ -9,8 +9,9 @@ var scroll = (function(){
         pN = "parentNode",pS = "previousSibling",sE = "srcElement",
         // Initial function
         useSlimScroll = function(C, p){
+            C.removeAttribute(l);  //reset
             if(C.offsetHeight < C.scrollHeight){
-                setAttr(C, 'data-slimscroll', '1');
+                setAttr(C, l, '1');
             	insertCss();
                 var h = C[iH],k = v.length, i = v[k] = {}, q = i.E = {};
                 // setting user defined classes
@@ -174,7 +175,7 @@ var scroll = (function(){
             }
             // Inserting css rules
             // Link: http://davidwalsh.name/add-rules-stylesheets
-            var slim = "[data-slimscroll]",
+            var slim = "["+l+"]",
                 imp = " !important",
                 pA = "position:absolute"+imp,
                 // classes
