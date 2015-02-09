@@ -5,7 +5,7 @@ Slim scroll is a replacement of default scrollbar provided by browsers. This plu
 
 [Download](https://github.com/venkateshwar/slim-scroll/releases/latest)&nbsp;&nbsp;| &nbsp;[Github](https://github.com/venkateshwar/slim-scroll/)
 
-**Tested on**: IE8+, Chrome and Firefox.
+**Tested on**: IE9+, Chrome and Firefox.
 
 ##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/index.html)
 

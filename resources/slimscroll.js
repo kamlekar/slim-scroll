@@ -2,7 +2,7 @@ var scroll = (function(){
     var v = [],
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
         // properties
-        oT = "offsetTop",pE = "parentElement",pes= "previousElementSibling", 
+        oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling", 
         iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
         // IE8 properties 
         // (Dev note: remove below variables from all over the code to exclude IE8 compatibility)
@@ -66,7 +66,7 @@ var scroll = (function(){
             i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
             i[s].style.height = i.sP1 + U;
             
-            i.reposition = i[s][oT]
+            i.reposition = getReposition(i[s], i.h);
         },
         // Start of private functions
         setAttr = function(e, p, v){
@@ -96,11 +96,11 @@ var scroll = (function(){
 
             if(!i || p === i[S]) return;
             var eY = e.pageY || event.clientY,
-                top = ((eY - (i[w][pE] || i[w][pN])[oT])/i.h * 100) - i.sP1/2;
+                top = ((eY - getTop(i[w][pE] || i[w][pN]))/i.h * 100) - i.sP1/2;
             if(top > i.rP1) top = i.rP1;
             else if(top < 0) top = 0;
             i[s].style.top = top + U;
-            i[w].scrollTop = top * i.sH1;
+            i[w][sT] = top * i.sH1;
             addClass(i[S], q.S + q.a);
         },
         beginScroll = function(e){
@@ -118,10 +118,14 @@ var scroll = (function(){
             addEvent('mousemove', document, moveScroll);
             addEvent('mouseup', document, endScroll);
 
-            i[oT] = i[w][oT];
+            i[oT] = getTop(i[w]);
             i.firstY = e.pageY || event.clientY;
-            if(!i.reposition) i.reposition = i[s][oT];
+            if(!i.reposition) i.reposition = getReposition(i[s], i.h);
             currentkey = k;
+        },
+        getReposition = function(i, h){
+            var x = parseInt(i.style.top.replace(U,""),10) * h/100;
+            return x?x:0;
         },
         moveScroll = function(e){
             var e = e || event,
@@ -131,11 +135,11 @@ var scroll = (function(){
 
             if(i.rP1 < top) top = i.rP1;
             if(!i.previousTop) i.previousTop = top + 1;
-            var blnThreshold = top >= 0 && i.firstY > i.offsetTop;
-            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w].scrollTop + i.h !== i.sH))){
+            var blnThreshold = top >= 0 && i.firstY > i[oT];
+            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w][sT] + i.h !== i.sH))){
                 i[s].style.top = top + U;
                 i.previousTop = top;   
-                i[w].scrollTop = top * i.sH1;
+                i[w][sT] = top * i.sH1;
             }
             addClass(i[S], q.S);
         },
@@ -154,7 +158,7 @@ var scroll = (function(){
             if(!i) return;
             var q = i.E;
             addClass(i[S], q.S);
-            i[s].style.top = i[w].scrollTop/i.sH1 + U;
+            i[s].style.top = i[w][sT]/i.sH1 + U;
             addClass(i[S], q.S + q.a);
         },
         addEvent = function(e, el, func){
@@ -168,6 +172,10 @@ var scroll = (function(){
         addCSSRule = function(S, s, r, i) {
             if(S.insertRule) S.insertRule(s + "{" + r + "}", i);
             else if(S.addRule) S.addRule(s, r, i);
+        },
+        getTop = function(el){
+            var t = document.documentElement[sT];
+            return el.getBoundingClientRect().top + (t?t:document.body[sT]);
         },
         insertCss = function(){
             if(v.inserted){
