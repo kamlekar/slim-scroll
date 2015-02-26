@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Slim-scroll : HTML element scroll bar as replacement for default browser&#39;s scroll-bar. Design as you want using CSS.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Slim-scroll</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/venkateshwar/slim-scroll">View on GitHub</a>
+
+          <h1 id="project_title">Slim-scroll</h1>
+          <h2 id="project_tagline">HTML element scroll bar as replacement for default browser&#39;s scroll-bar. Design as you want using CSS.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/venkateshwar/slim-scroll/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/venkateshwar/slim-scroll/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="slim-scroll-javascript-scroll-plugin" class="anchor" href="#slim-scroll-javascript-scroll-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Slim-scroll (<em>JavaScript Scroll Plugin</em>)</h1>
+
+<p>Slim scroll is a replacement of default scrollbar provided by browsers. This plugin lets you design the scroll-bar by using simple css properties. It is created using javascript and css.</p>
+
+<p><a href="https://github.com/venkateshwar/slim-scroll/releases/latest">Download</a>  |  <a href="https://github.com/venkateshwar/slim-scroll/">Github</a></p>
+
+<p><strong>Tested on</strong>: IE9+, Chrome and Firefox.</p>
+
+<h2>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://rawgit.com/venkateshwar/slim-scroll/master/index.html">Demo</a>
+</h2>
+
+<h3>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use:</h3>
+
+<ul>
+<li>To make it work, include <code>slimscroll.js</code> (<em>plugin</em>) in <code>head</code> tag.</li>
+<li>Apply height to the container in fixed units or percentage.</li>
+<li>Just design the scrollbar as you want by applying css classes as explained below.</li>
+<li>[In IE8] Apply high specificity to override normal styles given to the scroll bar.</li>
+</ul>
+
+<p>and then:</p>
+
+<h5>
+<a id="method-1-with-no-added-styles" class="anchor" href="#method-1-with-no-added-styles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 1 (<em>with no added styles</em>):</h5>
+
+<pre><code>scroll.useSlimScroll(Element);   // 'Element' is Javascript DOM object
+</code></pre>
+
+<h5>
+<a id="method-2-with-added-styles" class="anchor" href="#method-2-with-added-styles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 2 (<em>with added styles</em>):</h5>
+
+<p>or to add your own defined css styles:</p>
+
+<pre><code>scroll.useSlimScroll(Element, {
+  'wrapperClass': '',
+
+  'scrollBarClass': '',
+
+  'scrollBarContainerClass': '',  
+
+  'scrollBarContainerSpecialClass': '',
+
+  'scrollBarMinHeight': '',
+
+  'scrollBarFixedHeight': '',
+
+  'keepFocus': true/false
+});
+</code></pre>
+
+<h3>
+<a id="explanation-of-above-properties" class="anchor" href="#explanation-of-above-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explanation of above properties:</h3>
+
+<ul>
+<li>
+<strong>wrapperClass</strong> (<em>type - "string"</em>) : Mention wrapper class here.</li>
+<li>
+<strong>scrollBarClass</strong> (<em>type - "string"</em>) : Mention scroll bar class here.</li>
+<li>
+<strong>scrollBarContainerClass</strong> (<em>type - "string"</em>) : Mention scroll bar container class here.</li>
+<li>
+<strong>scrollBarContainerSpecialClass</strong> (<em>type - "string"</em>) : This property is used to mention a class which will be applied only when the user is scrolling the content. Could be helpful while applying animations to the scroll bar.</li>
+<li>
+<strong>scrollBarMinHeight</strong> (<em>type - "Integer"</em>) : Used to mention minimum scroll bar height here (without pixel unit)</li>
+<li>
+<strong>scrollBarFixedHeight</strong> (<em>type - "Integer"</em>) : Used to mention scroll bar fixed height (without pixel unit). This makes sure to show the scroll bar height fixed even when content inside the container is increased.</li>
+<li>
+<strong>keepFocus</strong> (<em>type - "Boolean"</em>) : Used to focus the container.</li>
+</ul>
+
+<h3>
+<a id="to-make-this-work-on-height-resize" class="anchor" href="#to-make-this-work-on-height-resize" aria-hidden="true"><span class="octicon octicon-link"></span></a>To make this work on height resize:</h3>
+
+<pre><code>window.onresize = scroll.setValues;  // pure javascript example.
+</code></pre>
+
+<h3>
+<a id="note" class="anchor" href="#note" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note:</h3>
+
+<ul>
+<li>Usage of the above mentioned properties is optional or as per need.</li>
+<li>Add <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">higher specificity</a> css to override the custom styles which are being applied by the plugin.</li>
+<li>Don't override the styles which are given highest specificity (<code>!important</code>) by the plugin (<em>those styles are necessary to make this scroll plugin work</em>).</li>
+</ul>
+
+<h3>
+<a id="how-i-got-this-thought" class="anchor" href="#how-i-got-this-thought" aria-hidden="true"><span class="octicon octicon-link"></span></a>How I got this thought:</h3>
+
+<p>I got this thought, when I found solution to hide the default scrollbar (<em>using css</em>) which was the requirement for a post on <a href="http://stackoverflow.com/a/16671476/1577396">Stackoverflow</a>.</p>
+
+<p>The solution was simple but that is how I got this thought :).</p>
+
+<hr>
+
+<p>If you find any issue(s), please file <a href="https://github.com/venkateshwar/slim-scroll/issues">here</a>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Slim-scroll maintained by <a href="https://github.com/venkateshwar">venkateshwar</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
