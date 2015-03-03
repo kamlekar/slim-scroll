@@ -11,7 +11,7 @@ html, body{
     display: inline-block;
     overflow: hidden;
     position: relative;
-    height: 200px;
+    height: 200px;  /* set this height in percentage to test resizing */
     width: 380px;
 }
 

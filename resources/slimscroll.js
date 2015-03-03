@@ -1,5 +1,5 @@
-var scroll = (function(){
-    var v = [],
+var slimScroll = function(C, payload){
+    var i = {},
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
         // properties
         oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling", 
@@ -7,50 +7,8 @@ var scroll = (function(){
         // IE8 properties 
         // (Dev note: remove below variables from all over the code to exclude IE8 compatibility)
         pN = "parentNode",pS = "previousSibling",sE = "srcElement",
-        // Initial function
-        useSlimScroll = function(C, p){
-            C.removeAttribute(l);  //reset
-            if(C.offsetHeight < C.scrollHeight){
-                setAttr(C, l, '1');
-            	insertCss();
-                var h = C[iH],k = v.length, i = v[k] = {}, q = i.E = {};
-                // setting user defined classes
-                p = p || {};
-                q.w = p.wrapperClass || "";
-                q.s = p.scrollBarClass || "";
-                q.S = p.scrollBarContainerClass || "";
-                q.a = p.scrollBarContainerSpecialClass ? " " + p.scrollBarContainerSpecialClass : "";
-                q.mH = p.scrollBarMinHeight || 25;
-                q.sH = p.scrollBarFixedHeight;  // could be undefined
-
-                C[iH] = "";
-                i[w] = cE(q.w, h, C);
-                i[S] = cE(q.S + q.a, "", C);
-                i[s] = cE(q.s, "", i[S]);
-                setAttr(i[s], 'data-scrollbar', '1');
-                setValues(k);
-                //store the key 'k' in the container
-                setAttr(i[w], sK, k);
-
-                if(p.keepFocus){
-                    setAttr(i[w], 'tabindex', '-1');
-                    i[w].focus();
-                }
-                // Attaching mouse events
-                addEvent('mousedown', i[s], beginScroll);
-                addEvent('click', i[S], setScroll);
-                // For scroll
-                addEvent('scroll', i[w], doScroll);
-            }
-        },
-        setValues = function(k){
-            if(typeof k === "number")assignValues(k);            
-            else
-                for(var j=0;j<v.length;j++)
-                    assignValues(j);
-        },
         assignValues = function(k){
-            var i = v[k], q = i.E;
+            var q = i.E;
             i.h = i[S].offsetHeight;
             i.sH = i[w].scrollHeight;
             i.sP = (i.h/i.sH) * 100;
@@ -88,11 +46,8 @@ var scroll = (function(){
         },
         setScroll = function(e){
             var e = e || event,el = e.target || event[sE],
-                p = el[pE] || el[pN],
-                k = getAttr(el[pS] || el[pes], sK);
-
-            if(!k) return;
-            var i = v[k],q = i.E;
+                p = el[pE] || el[pN];
+            var q = i.E;
 
             if(!i || p === i[S]) return;
             var eY = e.pageY || event.clientY,
@@ -112,8 +67,7 @@ var scroll = (function(){
                 else if (sel.empty) sel.empty();
             }
             var e = e || event,
-                el = e[cT] || e[sE],
-                k = getAttr((el[pE] || el[pN])[pS], sK),i = v[k];
+                el = e[cT] || e[sE];
 
             addEvent('mousemove', document, moveScroll);
             addEvent('mouseup', document, endScroll);
@@ -121,7 +75,6 @@ var scroll = (function(){
             i[oT] = getTop(i[w]);
             i.firstY = e.pageY || event.clientY;
             if(!i.reposition) i.reposition = getReposition(i[s], i.h);
-            currentkey = k;
         },
         getReposition = function(i, h){
             var x = parseInt(i.style.top.replace(U,""),10) * h/100;
@@ -129,7 +82,7 @@ var scroll = (function(){
         },
         moveScroll = function(e){
             var e = e || event,
-                k = currentkey,i = v[k],q = i.E,
+                q = i.E,
                 eY = e.pageY || e.clientY,
                 top = (i.reposition + eY - i.firstY)/i.h * 100;
 
@@ -144,7 +97,7 @@ var scroll = (function(){
             addClass(i[S], q.S);
         },
         endScroll = function(e){
-            var e = e || event,k = currentkey,i = v[k], q = i.E; 
+            var e = e || event,q = i.E; 
 
             removeEvent('mousemove', document);
             removeEvent('mouseup', document);
@@ -153,8 +106,7 @@ var scroll = (function(){
             addClass(i[S], q.S + q.a);
         },
         doScroll = function(e){
-            var e = e || event,
-                k = getAttr((e[cT] || e[sE]), sK),i = v[k];
+            var e = e || event;
             if(!i) return;
             var q = i.E;
             addClass(i[S], q.S);
@@ -178,7 +130,7 @@ var scroll = (function(){
             return el.getBoundingClientRect().top + (t?t:document.body[sT]);
         },
         insertCss = function(){
-            if(v.inserted){
+            if(window.slimScroll.inserted){
                 return;
             }
             // Inserting css rules
@@ -213,10 +165,44 @@ var scroll = (function(){
             else{
                 style.styleSheet.cssText = slim+">div{"+w+"}"+slim+">div+div"+"{"+S+"}"+slim+">div+div>div{"+s+"}";
             }
-            v.inserted = true;
-        };
+            window.slimScroll.inserted = true;
+        },
+        // Initial function
+        init = function(){
+            C.removeAttribute(l);  //reset
+            if(C.offsetHeight < C.scrollHeight){
+                setAttr(C, l, '1');
+                insertCss();
+                var h = C[iH], q = i.E = {};
+                // setting user defined classes
+                payload = payload || {};
+                q.w = payload.wrapperClass || "";
+                q.s = payload.scrollBarClass || "";
+                q.S = payload.scrollBarContainerClass || "";
+                q.a = payload.scrollBarContainerSpecialClass ? " " + payload.scrollBarContainerSpecialClass : "";
+                q.mH = payload.scrollBarMinHeight || 25;
+                q.sH = payload.scrollBarFixedHeight;  // could be undefined
+
+                C[iH] = "";
+                i[w] = cE(q.w, h, C);
+                i[S] = cE(q.S + q.a, "", C);
+                i[s] = cE(q.s, "", i[S]);
+                setAttr(i[s], 'data-scrollbar', '1');
+                assignValues();
+
+                if(payload.keepFocus){
+                    setAttr(i[w], 'tabindex', '-1');
+                    i[w].focus();
+                }
+                // Attaching mouse events
+                addEvent('mousedown', i[s], beginScroll);
+                addEvent('click', i[S], setScroll);
+                // For scroll
+                addEvent('scroll', i[w], doScroll);
+                // addEvent('selectstart', i[S], function(){return;});
+            }
+        }();
     return {
-        useSlimScroll : useSlimScroll,
-        setValues : setValues
+        resetValues: assignValues
     }
-})();
+};

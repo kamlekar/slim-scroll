@@ -19,13 +19,13 @@ and then:
 
 #####Method 1 (_with no added styles_):
 
-    scroll.useSlimScroll(Element);   // 'Element' is Javascript DOM object
+    new slimScroll(Element);   // 'Element' is Javascript DOM object
 
 #####Method 2 (_with added styles_):
 
 or to add your own defined css styles:
 
-    scroll.useSlimScroll(Element, {
+    new slimScroll(Element, {
       'wrapperClass': '',
 
       'scrollBarClass': '',
@@ -53,7 +53,8 @@ or to add your own defined css styles:
 
 ###To make this work on height resize:
 
-    window.onresize = scroll.setValues;  // pure javascript example.
+    var customScroll = new slimScroll();
+    window.onresize = customScroll.resetValues;  // pure javascript example.
 
 ###Note:
 
