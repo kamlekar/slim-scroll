@@ -59,7 +59,7 @@
 <h5>
 <a id="method-1-with-no-added-styles" class="anchor" href="#method-1-with-no-added-styles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 1 (<em>with no added styles</em>):</h5>
 
-<pre><code>scroll.useSlimScroll(Element);   // 'Element' is Javascript DOM object
+<pre><code>new slimScroll(Element);   // 'Element' is Javascript DOM object
 </code></pre>
 
 <h5>
@@ -67,7 +67,7 @@
 
 <p>or to add your own defined css styles:</p>
 
-<pre><code>scroll.useSlimScroll(Element, {
+<pre><code>new slimScroll(Element, {
   'wrapperClass': '',
 
   'scrollBarClass': '',
@@ -107,7 +107,8 @@
 <h3>
 <a id="to-make-this-work-on-height-resize" class="anchor" href="#to-make-this-work-on-height-resize" aria-hidden="true"><span class="octicon octicon-link"></span></a>To make this work on height resize:</h3>
 
-<pre><code>window.onresize = scroll.setValues;  // pure javascript example.
+<pre><code>var customScroll = new slimScroll();
+window.onresize = customScroll.resetValues;  // pure javascript example.
 </code></pre>
 
 <h3>
