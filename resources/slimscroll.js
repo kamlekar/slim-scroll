@@ -75,6 +75,8 @@ var slimScroll = function(C, payload){
             i[oT] = getTop(i[w]);
             i.firstY = e.pageY || event.clientY;
             if(!i.reposition) i.reposition = getReposition(i[s], i.h);
+            // Disable text selection while dragging the scrollbar
+            return false;
         },
         getReposition = function(i, h){
             var x = parseInt(i.style.top.replace(U,""),10) * h/100;
