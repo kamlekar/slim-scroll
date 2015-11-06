@@ -141,7 +141,7 @@ var slimScroll = function(C, payload){
                 imp = " !important",
                 pA = "position:absolute"+imp,
                 // classes
-                w = pA+";overflow:auto"+imp+";left:0px;top:0px"+imp+";right:-18px;bottom:0px"+imp+";padding-right:8px"+imp+";",
+                w = pA+";overflow:auto"+imp+";left:0px;top:0px"+imp+";right:0px;bottom:0px"+imp+";padding-right:8px"+imp+";",
                 S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px;left:auto;width:5px;cursor:pointer"+imp+";padding-right:0px"+imp+";",
                 s = pA+";background-color:#999;top:0px;left:0px;right:0px;",
                 //creating a sheet
@@ -192,6 +192,22 @@ var slimScroll = function(C, payload){
                 setAttr(i[s], 'data-scrollbar', '1');
                 assignValues();
 
+                var scrollBarWidth = C.offsetWidth - i[w].offsetWidth;
+                // Stretching the inner container so that the default scrollbar is completely invisible
+                if(Math.abs(scrollBarWidth) < 5){
+                    // Seems scrollbar isn't taking width.
+                    // So we can safely assume that the scrollbar looks beautiful 
+                    // Hence, lets not modify the default scrollbar 
+                    // Mostly, the scrollbar looks beautiful on Mac OSX
+
+                    // Removing our custom scroll component
+                    C.removeChild(i[S]);
+                    // returning to avoid further process
+                    return false;
+                }
+                else{
+                    i[w].style.right = scrollBarWidth + "px";
+                }
                 if(payload.keepFocus){
                     setAttr(i[w], 'tabindex', '-1');
                     i[w].focus();
