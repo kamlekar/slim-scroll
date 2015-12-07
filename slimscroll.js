@@ -192,7 +192,7 @@ var slimScroll = function(C, payload){
                 setAttr(i[s], 'data-scrollbar', '1');
                 assignValues();
 
-                var scrollBarWidth = C.offsetWidth - i[w].offsetWidth;
+                var scrollBarWidth = C.offsetWidth + C.offsetLeft - (i[S].offsetParent.offsetLeft + i[S].offsetLeft);
                 // Stretching the inner container so that the default scrollbar is completely invisible
                 if(Math.abs(scrollBarWidth) < 5){
                     // Seems scrollbar isn't taking width.
@@ -206,7 +206,7 @@ var slimScroll = function(C, payload){
                     return false;
                 }
                 else{
-                    i[w].style.right = scrollBarWidth + "px";
+                    i[w].style.right = -scrollBarWidth + "px";
                 }
                 if(payload.keepFocus){
                     setAttr(i[w], 'tabindex', '-1');
