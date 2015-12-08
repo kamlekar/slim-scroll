@@ -192,7 +192,7 @@ var slimScroll = function(C, payload){
                 setAttr(i[s], 'data-scrollbar', '1');
                 assignValues();
 
-                var scrollBarWidth = C.offsetWidth + C.offsetLeft - (i[S].offsetParent.offsetLeft + i[S].offsetLeft);
+                var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
                 // Stretching the inner container so that the default scrollbar is completely invisible
                 if(Math.abs(scrollBarWidth) < 5){
                     // Seems scrollbar isn't taking width.
