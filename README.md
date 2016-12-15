@@ -74,7 +74,6 @@ I got this thought, when I found solution to hide the default scrollbar (_using 
 The solution was simple but that is how I got this thought :).
 
 ### Future implementations:
-- Make it work for operating systems other than Windows.
 - Implement Horizontal Scrollbar.
 
 ---------------------------------
