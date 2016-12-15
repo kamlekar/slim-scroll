@@ -2,7 +2,7 @@ var slimScroll = function(C, payload){
 
 
     var i = {},
-        _this,
+        _this = this,
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
         // properties
         oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling",
@@ -261,9 +261,8 @@ var slimScroll = function(C, payload){
             }
         };
 
-        this.resetValues = assignValues;
-        this.init = init;
-        _this = this;
+        _this.resetValues = assignValues;
+        _this.init = init;
         init();
     return _this;
 };

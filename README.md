@@ -1,6 +1,6 @@
-#Slim-scroll (_JavaScript Scroll Plugin_)
+#Slim-scroll (_JavaScript Scroll Library)
 
-Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This plugin lets you design the scroll-bar by using simple css properties. It is created using javascript and css. This will change the style only if the default scrollbar looks ugly.
+Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This library lets you design the scroll-bar by using simple css properties. It is created using javascript and css. This will change the style only if the default scrollbar looks ugly.
 
 [Download](https://github.com/kamlekar/slim-scroll/releases/latest)&nbsp;&nbsp;| &nbsp;[Github](https://github.com/venkateshwar/slim-scroll/)
 
@@ -15,7 +15,7 @@ Slim scroll is a replacement of default scrollbar provided by browsers on Window
 - Re-evaluates when the window is resized, vertically.
 
 ###How to use:
-- To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
+- To make it work, include `slimscroll.js` in `head` tag.
 - Apply height to the container in fixed units or percentage.
 - Just design the scrollbar as you want by applying css classes as explained below.
 - [In IE8] Apply high specificity to override normal styles given to the scroll bar.
@@ -64,8 +64,8 @@ or to add your own defined css styles:
 ###Note:
 
 - Usage of the above mentioned properties is optional or as per need.
-- Add [higher specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) css to override the custom styles which are being applied by the plugin.
-- Don't override the styles which are given highest specificity (`!important`) by the plugin (_those styles are necessary to make this scroll plugin work_).
+- Add [higher specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) css to override the custom styles which are being applied by this library.
+- Don't override the styles which are given highest specificity (`!important`) by this library (_those styles are necessary to make this scroll library work_).
 
 
 ###How I got this thought:
