@@ -230,6 +230,7 @@ var slimScroll = function(C, payload){
                     // Removing our custom scroll component
                     C.removeChild(i[S]);
                     // returning to avoid further process
+                    _this.initInProcess = false;
                     return false;
                 }
                 else{
