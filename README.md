@@ -1,7 +1,5 @@
 #Slim-scroll (_JavaScript Scroll Plugin_)
 
-# Please use [1.2.1 release](https://github.com/kamlekar/slim-scroll/releases/tag/v1.2.1) only
-
 Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This plugin lets you design the scroll-bar by using simple css properties. It is created using javascript and css. This will change the style only if the default scrollbar looks ugly.
 
 [Download](https://github.com/kamlekar/slim-scroll/releases/latest)&nbsp;&nbsp;| &nbsp;[Github](https://github.com/venkateshwar/slim-scroll/)
@@ -9,6 +7,12 @@ Slim scroll is a replacement of default scrollbar provided by browsers on Window
 **Tested on**: IE9+, Chrome and Firefox.
 
 ##[Demo](https://rawgit.com/venkateshwar/slim-scroll/master/test/index.html)
+
+### Main Features:
+- Works for Windows. (_Need help to check on other Operating Systems_)
+- Easier to color the custom scrollbar using CSS.
+- Can animate easily (_check below properties for support_).
+- Re-evaluates when the window is resized, vertically.
 
 ###How to use:
 - To make it work, include `slimscroll.js` (_plugin_) in `head` tag.
@@ -69,6 +73,10 @@ or to add your own defined css styles:
 I got this thought, when I found solution to hide the default scrollbar (_using css_) which was the requirement for a post on [Stackoverflow](http://stackoverflow.com/a/16671476/1577396).
 
 The solution was simple but that is how I got this thought :).
+
+### Future implementations:
+- Make it work for operating systems other than Windows.
+- Implement Horizontal Scrollbar.
 
 ---------------------------------
 

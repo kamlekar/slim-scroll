@@ -38,7 +38,7 @@ html, body{
     -moz-user-select: -moz-none;
     -o-user-select: none;
     user-select: none;
-} 
+}
 
 .scroll{
     border-radius: 10px;
@@ -54,5 +54,3 @@ html, body{
 .scroll-bar{
     background-color: #14D1E0;
 }
-
-
