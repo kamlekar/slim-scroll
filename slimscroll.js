@@ -1,4 +1,6 @@
 var slimScroll = function(C, payload){
+
+
     var i = {},
         _this,
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
@@ -143,43 +145,46 @@ var slimScroll = function(C, payload){
             return el.getBoundingClientRect().top + (t?t:document.body[sT]);
         },
         insertCss = function(){
-            if(_this.isSlimScrollInserted){
-                _this.initInProcess = false;
-                return;
-            }
-            // Inserting css rules
-            // Link: http://davidwalsh.name/add-rules-stylesheets
-            var slim = "["+l+"]",
-                imp = " !important",
-                pA = "position:absolute"+imp,
-                // classes
-                w = pA+";overflow:auto"+imp+";left:0px;top:0px"+imp+";right:0px;bottom:0px"+imp+";padding-right:8px"+imp+";",
-                S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px;left:auto;width:5px;cursor:pointer"+imp+";padding-right:0px"+imp+";",
-                s = pA+";background-color:#999;top:0px;left:0px;right:0px;",
-                //creating a sheet
-                style = document.createElement('style'),
-                scrollBar = "[data-scrollbar]";
-            try{
-                // WebKit hack :(
-                style.appendChild(document.createTextNode(""));
-            }catch(ex){}
+            if(!window.slimScrollStylesApplied){
+                if(_this.isSlimScrollInserted){
+                    _this.initInProcess = false;
+                    return;
+                }
+                // Inserting css rules
+                // Link: http://davidwalsh.name/add-rules-stylesheets
+                var slim = "["+l+"]",
+                    imp = " !important",
+                    pA = "position:absolute"+imp,
+                    // classes
+                    w = pA+";overflow:auto"+imp+";left:0px;top:0px"+imp+";right:0px;bottom:0px"+imp+";padding-right:8px"+imp+";",
+                    S = pA+";top:0px"+imp+";bottom:0px"+imp+";right:0px;left:auto;width:5px;cursor:pointer"+imp+";padding-right:0px"+imp+";",
+                    s = pA+";background-color:#999;top:0px;left:0px;right:0px;",
+                    //creating a sheet
+                    style = document.createElement('style'),
+                    scrollBar = "[data-scrollbar]";
+                try{
+                    // WebKit hack :(
+                    style.appendChild(document.createTextNode(""));
+                }catch(ex){}
 
-            var head =  document.head || document.getElementsByTagName('head')[0];
+                var head =  document.head || document.getElementsByTagName('head')[0];
 
-            // adding above css to the sheet
-            head.insertBefore(style, (head.hasChildNodes())
-                                ? head.childNodes[0]
-                                : null);
-            var sheet = style.sheet;
-            if(sheet){
-                addCSSRule(sheet, slim+">div", w, 0);
-                addCSSRule(sheet, slim+">div+div", S, 0);
-                addCSSRule(sheet, scrollBar, s, 0);
+                // adding above css to the sheet
+                head.insertBefore(style, (head.hasChildNodes())
+                                    ? head.childNodes[0]
+                                    : null);
+                var sheet = style.sheet;
+                if(sheet){
+                    addCSSRule(sheet, slim+">div", w, 0);
+                    addCSSRule(sheet, slim+">div+div", S, 0);
+                    addCSSRule(sheet, scrollBar, s, 0);
+                }
+                else{
+                    style.styleSheet.cssText = slim+">div{"+w+"}"+slim+">div+div"+"{"+S+"}"+slim+">div+div>div{"+s+"}";
+                }
+                _this.isSlimScrollInserted = true;
+                window.slimScrollStylesApplied = true;
             }
-            else{
-                style.styleSheet.cssText = slim+">div{"+w+"}"+slim+">div+div"+"{"+S+"}"+slim+">div+div>div{"+s+"}";
-            }
-            _this.isSlimScrollInserted = true;
         },
         removeSlimScroll = function(){
             C.removeAttribute(l);  //reset
@@ -231,10 +236,12 @@ var slimScroll = function(C, payload){
                     C.removeChild(i[S]);
                     // returning to avoid further process
                     _this.initInProcess = false;
+                    _this.isSlimScrollInserted = false;
                     return false;
                 }
                 else{
                     i[w].style.right = -scrollBarWidth + "px";
+                    _this.isSlimScrollInserted = true;
                 }
                 if(payload.keepFocus){
                     setAttr(i[w], 'tabindex', '-1');
@@ -258,5 +265,5 @@ var slimScroll = function(C, payload){
         this.init = init;
         _this = this;
         init();
-    return this;
+    return _this;
 };
