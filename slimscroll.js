@@ -21,6 +21,9 @@ var slimScroll = function(C, payload){
                     return;
                 }
             }
+
+            // hide the scrollbar temporarily to take the calculations correctly
+            i[w].setAttribute("style", "overflow: hidden !important");
             var q = i.E;
             i.h = i[S].offsetHeight;
             i.sH = i[w].scrollHeight;
@@ -224,6 +227,8 @@ var slimScroll = function(C, payload){
                 setAttr(i[s], 'data-scrollbar', '1');
                 assignValues();
 
+                // Show the default scrollbar to get the scrollbar width
+                i[w].style.overflow = "";
                 var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
                 // Stretching the inner container so that the default scrollbar is completely invisible
                 if(Math.abs(scrollBarWidth) < 5){

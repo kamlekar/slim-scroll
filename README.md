@@ -1,4 +1,4 @@
-#Slim-scroll (_JavaScript Scroll Library)
+#Slim-scroll (_JavaScript Scroll Library_)
 
 Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This library lets you design the scroll-bar by using simple css properties. It is created using javascript and css. This will change the style only if the default scrollbar looks ugly.
 
@@ -12,7 +12,7 @@ Slim scroll is a replacement of default scrollbar provided by browsers on Window
 - Works for Windows. (_Need help to check on other Operating Systems_)
 - Easier to color the custom scrollbar using CSS.
 - Can animate easily (_check below properties for support_).
-- Re-evaluates when the window is resized, vertically.
+- Re-evaluates when the container is fluid, vertically.
 
 ###How to use:
 - To make it work, include `slimscroll.js` in `head` tag.
