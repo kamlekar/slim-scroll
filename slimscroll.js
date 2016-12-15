@@ -231,23 +231,8 @@ var slimScroll = function(C, payload){
                 i[w].style.overflow = "";
                 var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
                 // Stretching the inner container so that the default scrollbar is completely invisible
-                if(Math.abs(scrollBarWidth) < 5){
-                    // Seems scrollbar isn't taking width.
-                    // So we can safely assume that the scrollbar looks beautiful
-                    // Hence, lets not modify the default scrollbar
-                    // Mostly, the scrollbar looks beautiful on Mac OSX
-
-                    // Removing our custom scroll component
-                    C.removeChild(i[S]);
-                    // returning to avoid further process
-                    _this.initInProcess = false;
-                    _this.isSlimScrollInserted = false;
-                    return false;
-                }
-                else{
-                    i[w].style.right = -scrollBarWidth + "px";
-                    _this.isSlimScrollInserted = true;
-                }
+                i[w].style.right = -scrollBarWidth + "px";
+                _this.isSlimScrollInserted = true;
                 if(payload.keepFocus){
                     setAttr(i[w], 'tabindex', '-1');
                     i[w].focus();
