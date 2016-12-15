@@ -20,23 +20,33 @@
 
     <section class="main-content">
       <h1>
-<a id="slim-scroll-javascript-scroll-plugin" class="anchor" href="#slim-scroll-javascript-scroll-plugin" aria-hidden="true"><span class="octicon octicon-link"></span></a>Slim-scroll (<em>JavaScript Scroll Plugin</em>)</h1>
+<a id="slim-scroll-javascript-scroll-library" class="anchor" href="#slim-scroll-javascript-scroll-library" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Slim-scroll (<em>JavaScript Scroll Library</em>)</h1>
 
-<p>Slim scroll is a replacement of default scrollbar provided by browsers. This plugin lets you design the scroll-bar by using simple css properties. It is created using javascript and css.</p>
+<p>Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This library lets you design the scroll-bar by using simple css properties. It is created using javascript and css. This will change the style only if the default scrollbar looks ugly.</p>
 
-<p><a href="https://github.com/venkateshwar/slim-scroll/releases/latest">Download</a>  |  <a href="https://github.com/venkateshwar/slim-scroll/">Github</a></p>
+<p><a href="https://github.com/kamlekar/slim-scroll/releases/latest">Download</a>  |  <a href="https://github.com/venkateshwar/slim-scroll/">Github</a></p>
 
 <p><strong>Tested on</strong>: IE9+, Chrome and Firefox.</p>
 
 <h2>
-<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="https://rawgit.com/venkateshwar/slim-scroll/master/test/index.html">Demo</a>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a href="https://rawgit.com/venkateshwar/slim-scroll/master/test/index.html">Demo</a>
 </h2>
 
 <h3>
-<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use:</h3>
+<a id="main-features" class="anchor" href="#main-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Main Features:</h3>
 
 <ul>
-<li>To make it work, include <code>slimscroll.js</code> (<em>plugin</em>) in <code>head</code> tag.</li>
+<li>Works for Windows. (<em>Need help to check on other Operating Systems</em>)</li>
+<li>Easier to color the custom scrollbar using CSS.</li>
+<li>Can animate easily (<em>check below properties for support</em>).</li>
+<li>Re-evaluates when the container is fluid, vertically.</li>
+</ul>
+
+<h3>
+<a id="how-to-use" class="anchor" href="#how-to-use" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use:</h3>
+
+<ul>
+<li>To make it work, include <code>slimscroll.js</code> in <code>head</code> tag.</li>
 <li>Apply height to the container in fixed units or percentage.</li>
 <li>Just design the scrollbar as you want by applying css classes as explained below.</li>
 <li>[In IE8] Apply high specificity to override normal styles given to the scroll bar.</li>
@@ -45,13 +55,13 @@
 <p>and then:</p>
 
 <h5>
-<a id="method-1-with-no-added-styles" class="anchor" href="#method-1-with-no-added-styles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 1 (<em>with no added styles</em>):</h5>
+<a id="method-1-with-no-added-styles" class="anchor" href="#method-1-with-no-added-styles" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Method 1 (<em>with no added styles</em>):</h5>
 
 <pre><code>new slimScroll(Element);   // 'Element' is Javascript DOM object
 </code></pre>
 
 <h5>
-<a id="method-2-with-added-styles" class="anchor" href="#method-2-with-added-styles" aria-hidden="true"><span class="octicon octicon-link"></span></a>Method 2 (<em>with added styles</em>):</h5>
+<a id="method-2-with-added-styles" class="anchor" href="#method-2-with-added-styles" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Method 2 (<em>with added styles</em>):</h5>
 
 <p>or to add your own defined css styles:</p>
 
@@ -73,7 +83,7 @@
 </code></pre>
 
 <h3>
-<a id="explanation-of-above-properties" class="anchor" href="#explanation-of-above-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explanation of above properties:</h3>
+<a id="explanation-of-above-properties" class="anchor" href="#explanation-of-above-properties" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Explanation of above properties:</h3>
 
 <ul>
 <li>
@@ -93,27 +103,35 @@
 </ul>
 
 <h3>
-<a id="to-make-this-work-on-height-resize" class="anchor" href="#to-make-this-work-on-height-resize" aria-hidden="true"><span class="octicon octicon-link"></span></a>To make this work on height resize:</h3>
+<a id="to-make-this-work-on-height-resize" class="anchor" href="#to-make-this-work-on-height-resize" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>To make this work on height resize:</h3>
 
 <pre><code>var customScroll = new slimScroll();
 window.onresize = customScroll.resetValues;  // pure javascript example.
 </code></pre>
 
 <h3>
-<a id="note" class="anchor" href="#note" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note:</h3>
+<a id="note" class="anchor" href="#note" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Note:</h3>
 
 <ul>
 <li>Usage of the above mentioned properties is optional or as per need.</li>
-<li>Add <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">higher specificity</a> css to override the custom styles which are being applied by the plugin.</li>
-<li>Don't override the styles which are given highest specificity (<code>!important</code>) by the plugin (<em>those styles are necessary to make this scroll plugin work</em>).</li>
+<li>Add <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity">higher specificity</a> css to override the custom styles which are being applied by this library.</li>
+<li>Don't override the styles which are given highest specificity (<code>!important</code>) by this library (<em>those styles are necessary to make this scroll library work</em>).</li>
 </ul>
 
 <h3>
-<a id="how-i-got-this-thought" class="anchor" href="#how-i-got-this-thought" aria-hidden="true"><span class="octicon octicon-link"></span></a>How I got this thought:</h3>
+<a id="how-i-got-this-thought" class="anchor" href="#how-i-got-this-thought" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How I got this thought:</h3>
 
 <p>I got this thought, when I found solution to hide the default scrollbar (<em>using css</em>) which was the requirement for a post on <a href="http://stackoverflow.com/a/16671476/1577396">Stackoverflow</a>.</p>
 
 <p>The solution was simple but that is how I got this thought :).</p>
+
+<h3>
+<a id="future-implementations" class="anchor" href="#future-implementations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Future implementations:</h3>
+
+<ul>
+<li>Make it work for operating systems other than Windows.</li>
+<li>Implement Horizontal Scrollbar.</li>
+</ul>
 
 <hr>
 
