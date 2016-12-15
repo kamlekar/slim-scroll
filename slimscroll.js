@@ -1,13 +1,24 @@
 var slimScroll = function(C, payload){
     var i = {},
+        _this,
         w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
         // properties
-        oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling", 
+        oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling",
         iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
-        // IE8 properties 
+        // IE8 properties
         // (Dev note: remove below variables from all over the code to exclude IE8 compatibility)
         pN = "parentNode",pS = "previousSibling",sE = "srcElement",
         assignValues = function(k){
+            if(!_this.initInProcess){
+                if(!_this.initDone){           // If I object is empty
+                    _this.init();    // Initialize again
+                }
+
+                if(!scrollBarVisible(i[w])){
+                    removeSlimScroll();
+                    return;
+                }
+            }
             var q = i.E;
             i.h = i[S].offsetHeight;
             i.sH = i[w].scrollHeight;
@@ -18,12 +29,12 @@ var slimScroll = function(C, payload){
             // if user hasn't provided the fixed scroll height value
             if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.h * 100): i.sP;
             else i.sP1 = q.sH/i.h * 100;
-            
+
             i.rP1 = 100 - i.sP1;
             i.x = (i.sH - i.h) * ((i.sP1 - i.sP)/(100 - i.sP));
             i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
             i[s].style.height = i.sP1 + U;
-            
+
             i.reposition = getReposition(i[s], i.h);
         },
         // Start of private functions
@@ -32,7 +43,7 @@ var slimScroll = function(C, payload){
         },
         getAttr = function(e, p){
             if(!e) return;
-            return e.getAttribute(p);            
+            return e.getAttribute(p);
         },
         addClass = function(e, c){
             if(c.length) e.className = c;
@@ -93,13 +104,13 @@ var slimScroll = function(C, payload){
             var blnThreshold = top >= 0 && i.firstY > i[oT];
             if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w][sT] + i.h !== i.sH))){
                 i[s].style.top = top + U;
-                i.previousTop = top;   
+                i.previousTop = top;
                 i[w][sT] = top * i.sH1;
             }
             addClass(i[S], q.S);
         },
         endScroll = function(e){
-            var e = e || event,q = i.E; 
+            var e = e || event,q = i.E;
 
             removeEvent('mousemove', document);
             removeEvent('mouseup', document);
@@ -132,7 +143,8 @@ var slimScroll = function(C, payload){
             return el.getBoundingClientRect().top + (t?t:document.body[sT]);
         },
         insertCss = function(){
-            if(window.slimScroll.inserted){
+            if(_this.isSlimScrollInserted){
+                _this.initInProcess = false;
                 return;
             }
             // Inserting css rules
@@ -151,15 +163,15 @@ var slimScroll = function(C, payload){
                 // WebKit hack :(
                 style.appendChild(document.createTextNode(""));
             }catch(ex){}
-            
+
             var head =  document.head || document.getElementsByTagName('head')[0];
-                
+
             // adding above css to the sheet
             head.insertBefore(style, (head.hasChildNodes())
                                 ? head.childNodes[0]
                                 : null);
             var sheet = style.sheet;
-            if(sheet){                
+            if(sheet){
                 addCSSRule(sheet, slim+">div", w, 0);
                 addCSSRule(sheet, slim+">div+div", S, 0);
                 addCSSRule(sheet, scrollBar, s, 0);
@@ -167,12 +179,27 @@ var slimScroll = function(C, payload){
             else{
                 style.styleSheet.cssText = slim+">div{"+w+"}"+slim+">div+div"+"{"+S+"}"+slim+">div+div>div{"+s+"}";
             }
-            window.slimScroll.inserted = true;
+            _this.isSlimScrollInserted = true;
+        },
+        removeSlimScroll = function(){
+            C.removeAttribute(l);  //reset
+            if(_this.isSlimScrollInserted){
+                C.innerHTML = C.firstChild.innerHTML;
+            }
+            _this.isSlimScrollInserted = false;
+            _this.initDone = false;
+
+        },
+        scrollBarVisible = function(x){
+            if(!x) x = C;
+            return x.offsetHeight < x.scrollHeight;
         },
         // Initial function
         init = function(){
-            C.removeAttribute(l);  //reset
-            if(C.offsetHeight < C.scrollHeight){
+            removeSlimScroll();
+            if(scrollBarVisible()){
+                _this.initDone = true;
+                _this.initInProcess = true;
                 setAttr(C, l, '1');
                 insertCss();
                 var h = C[iH], q = i.E = {};
@@ -196,8 +223,8 @@ var slimScroll = function(C, payload){
                 // Stretching the inner container so that the default scrollbar is completely invisible
                 if(Math.abs(scrollBarWidth) < 5){
                     // Seems scrollbar isn't taking width.
-                    // So we can safely assume that the scrollbar looks beautiful 
-                    // Hence, lets not modify the default scrollbar 
+                    // So we can safely assume that the scrollbar looks beautiful
+                    // Hence, lets not modify the default scrollbar
                     // Mostly, the scrollbar looks beautiful on Mac OSX
 
                     // Removing our custom scroll component
@@ -218,9 +245,17 @@ var slimScroll = function(C, payload){
                 // For scroll
                 addEvent('scroll', i[w], doScroll);
                 // addEvent('selectstart', i[S], function(){return;});
+                _this.initInProcess = false;
             }
-        }();
-    return {
-        resetValues: assignValues
-    }
+            else{
+                removeSlimScroll();
+                return;     // don't do any further operations
+            }
+        };
+
+        this.resetValues = assignValues;
+        this.init = init;
+        _this = this;
+        init();
+    return this;
 };

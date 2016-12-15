@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>slim scroll demo</title>
+        <script src="../slimscroll.js"></script>
+        <!-- <link rel="stylesheet" type="text/css" href="slimscroll.css" /> -->
+        <style>
+        .slimScroll {
+          position: fixed;
+          width: 100px;
+          height:50%;
+          left:0px;
+          bottom:0px;
+          background-color: #00ff00;
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Scroller Test</h1>
+
+
+        <div class="slimScroll">
+          <ul>
+            <li>test 1</li>
+            <li>test 2</li>
+            <li>test 3</li>
+            <li>test 4</li>
+            <li>test 5</li>
+            <li>test 6</li>
+            <li>test 7</li>
+            <li>test 8</li>
+          </ul>
+        </div>
+        <script>
+        window.onload = function(){
+            if(!navigator.userAgent.match('Macintosh')){
+
+                var element = document.querySelectorAll('.slimScroll');
+
+                var one = new slimScroll(element[0], {
+                    'wrapperClass': 'scroll-wrapper unselectable mac',
+                    'scrollBarContainerClass': 'scrollBarContainer',
+                    'scrollBarContainerSpecialClass': 'animate',
+                    'scrollBarClass': 'scroll',
+                    'keepFocus': true
+                });
+
+                window.onresize = function(){
+                    one.resetValues();
+                }
+
+            }
+            else{
+                document.write("For Mac users, this custom slimscroll styles will not be applied");
+            }
+        }
+        </script>
+    </body>
+</html>
