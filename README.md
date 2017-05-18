@@ -1,4 +1,4 @@
-#Slim-scroll (_JavaScript Scroll Library_)  ~ 5KB compressed
+# Slim-scroll (_JavaScript Scroll Library_)  ~ 5KB compressed
 
 Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This library lets you design the scroll-bar by using simple css properties. It is created using javascript and css.
 
