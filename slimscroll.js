@@ -1,19 +1,31 @@
 var slimScroll = function(C, payload){
-
-
     var i = {},
         _this = this,
-        w = "wrapper",s = "scrollBar",S = "scrollBarContainer",a = "",m = "",l="data-slimscroll",
+        w   = "wrapper",
+        s   = "scrollBar",
+        S   = "scrollBarContainer",
+        a   = "",
+        m   = "",
+        l   ="data-slimscroll",
         // properties
-        oT = "offsetTop",sT = "scrollTop",pE = "parentElement",pes= "previousElementSibling",
-        iH = "innerHTML",cT = "currentTarget",sK = "scroll-k",U = "%",d = ".",
+        oT  = "offsetTop",
+        sT  = "scrollTop",
+        pE  = "parentElement",
+        pes = "previousElementSibling",
+        iH  = "innerHTML",
+        cT  = "currentTarget",
+        sK  = "scroll-k",
+        U   = "%",
+        d   = ".",
         // IE8 properties
         // (Dev note: remove below variables from all over the code to exclude IE8 compatibility)
-        pN = "parentNode",pS = "previousSibling",sE = "srcElement",
+        pN = "parentNode",
+        pS = "previousSibling",     // Not used anywhere (need to check)
+        sE = "srcElement",          // Not used anywhere (need to check)
         assignValues = function(k){
             if(!_this.initInProcess){
-                if(!_this.initDone){           // If I object is empty
-                    _this.init();    // Initialize again
+                if(!_this.initDone){    // If i object is empty
+                    _this.init();       // Initialize again
                 }
 
                 if(!scrollBarVisible(i[w])){
@@ -192,7 +204,10 @@ var slimScroll = function(C, payload){
         removeSlimScroll = function(){
             C.removeAttribute(l);  //reset
             if(_this.isSlimScrollInserted){
-                C.innerHTML = C.firstChild.innerHTML;
+                var insideContent = C.firstChild.innerHTML;
+                if(insideContent){
+                    C.innerHTML = insideContent;
+                }
             }
             _this.isSlimScrollInserted = false;
             _this.initDone = false;
@@ -251,7 +266,28 @@ var slimScroll = function(C, payload){
             }
         };
 
-        _this.resetValues = assignValues;
+        _this.resetValues = function(){
+            if(Object.keys(i).length){
+                assignValues();
+
+                // => Adding same styles as already present in init function
+                // @TODO: need to remove this repeating code and make it reuasable
+                // remove overflow hidden
+                i[w].style.overflow = '';
+
+                var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
+                // Stretching the inner container so that the default scrollbar is completely invisible
+                i[w].style.right = -scrollBarWidth + "px";
+                _this.isSlimScrollInserted = true;
+                if(payload.keepFocus){
+                    setAttr(i[w], 'tabindex', '-1');
+                    i[w].focus();
+                }
+            }
+            else{
+                assignValues();
+            }
+        }
         _this.init = init;
         init();
     return _this;
