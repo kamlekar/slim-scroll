@@ -242,12 +242,7 @@ var slimScroll = function(C, payload){
                 setAttr(i[s], 'data-scrollbar', '1');
                 assignValues();
 
-                // Show the default scrollbar to get the scrollbar width
-                i[w].style.overflow = "";
-                var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
-                // Stretching the inner container so that the default scrollbar is completely invisible
-                i[w].style.right = -scrollBarWidth + "px";
-                _this.isSlimScrollInserted = true;
+                placeIt();
                 if(payload.keepFocus){
                     setAttr(i[w], 'tabindex', '-1');
                     i[w].focus();
@@ -264,25 +259,26 @@ var slimScroll = function(C, payload){
                 removeSlimScroll();
                 return;     // don't do any further operations
             }
+        },
+
+        placeIt = function(){
+            // Show the default scrollbar to get the scrollbar width
+            i[w].style.overflow = "";
+            var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
+            // Stretching the inner container so that the default scrollbar is completely invisible
+            i[w].style.right = -scrollBarWidth + "px";
+            _this.isSlimScrollInserted = true;
+            if(payload.keepFocus){
+                setAttr(i[w], 'tabindex', '-1');
+                i[w].focus();
+            }
         };
 
         _this.resetValues = function(){
             if(Object.keys(i).length){
                 assignValues();
-
-                // => Adding same styles as already present in init function
-                // @TODO: need to remove this repeating code and make it reuasable
-                // remove overflow hidden
-                i[w].style.overflow = '';
-
-                var scrollBarWidth = i[w].offsetWidth - i[w].clientWidth;
-                // Stretching the inner container so that the default scrollbar is completely invisible
-                i[w].style.right = -scrollBarWidth + "px";
-                _this.isSlimScrollInserted = true;
-                if(payload.keepFocus){
-                    setAttr(i[w], 'tabindex', '-1');
-                    i[w].focus();
-                }
+                
+                placeIt();
             }
             else{
                 assignValues();
