@@ -1,6 +1,6 @@
 {
   "name": "slim-scroll",
-  "version": "1.3.0",
+  "version": "1.3.2",
   "description": "Slim scroll is a replacement of default scrollbar provided by browsers on Windows. This library lets you design the scroll-bar by using simple css properties. It is created using javascript and css.",
   "main": "slimscroll.js",
   "directories": {
