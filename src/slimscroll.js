@@ -275,17 +275,16 @@ var slimScroll = function (C, payload) {
                 i[w].focus();
             }
         };
+        _this.resetValues = function () {
+            if (Object.keys(i).length) {
+                assignValues();
 
-    _this.resetValues = function () {
-        if (Object.keys(i).length) {
-            assignValues();
-
-            placeIt();
-        }
-        else {
-            assignValues();
-        }
-    };
+                placeIt();
+            }
+            else {
+                assignValues();
+            }
+        };
         _this.init = init;
         init();
     return _this;
