@@ -1,4 +1,9 @@
-var slimScroll = function(C, payload){
+/**
+ * @returns {JSON} Returns itself
+ * @param {Element} C Element to place the scroll on
+ * @param {JSON} payload Options for scroll
+ */
+var slimScroll = function (C, payload) {
     var i = {},
         _this = this,
         w   = "wrapper",
@@ -39,17 +44,17 @@ var slimScroll = function(C, payload){
             var q = i.E;
             i.h = i[S].offsetHeight;
             i.sH = i[w].scrollHeight;
-            i.sP = (i.h/i.sH) * 100;
+            i.sP = i.h/i.sH * 100;
             // i.sbh is scroll bar height in pixels without pixel unit.
             i.sbh = i.sP * i.h/100;
             // Manually set the height of the scrollbar (in percentage)
             // if user hasn't provided the fixed scroll height value
-            if(!q.sH) i.sP1 = i.sbh < q.mH? (q.mH/i.h * 100): i.sP;
+            if(!q.sH) i.sP1 = i.sbh < q.mH? q.mH/i.h * 100: i.sP;
             else i.sP1 = q.sH/i.h * 100;
 
             i.rP1 = 100 - i.sP1;
             i.x = (i.sH - i.h) * ((i.sP1 - i.sP)/(100 - i.sP));
-            i.sH1 = Math.abs((i.x / (i.rP1)) + (i.sH/100));
+            i.sH1 = Math.abs(i.x / i.rP1 + i.sH/100);
             i[s].style.height = i.sP1 + U;
 
             i.reposition = getReposition(i[s], i.h);
@@ -73,13 +78,13 @@ var slimScroll = function(C, payload){
             return d;
         },
         setScroll = function(e){
-            var e = e || event,el = e.target || event[sE],
+            e = e || event,el = e.target || event[sE],
                 p = el[pE] || el[pN];
             var q = i.E;
 
             if(!i || p === i[S]) return;
             var eY = e.pageY || event.clientY,
-                top = ((eY - getTop(i[w][pE] || i[w][pN]))/i.h * 100) - i.sP1/2;
+                top = eY - getTop(i[w][pE] || i[w][pN])/i.h * 100 - i.sP1/2;
             if(top > i.rP1) top = i.rP1;
             else if(top < 0) top = 0;
             i[s].style.top = top + U;
@@ -94,7 +99,7 @@ var slimScroll = function(C, payload){
                 if (sel.removeAllRanges) sel.removeAllRanges();
                 else if (sel.empty) sel.empty();
             }
-            var e = e || event,
+            e = e || event,
                 el = e[cT] || e[sE];
 
             addEvent('mousemove', document, moveScroll);
@@ -111,7 +116,7 @@ var slimScroll = function(C, payload){
             return x?x:0;
         },
         moveScroll = function(e){
-            var e = e || event,
+            e = e || event,
                 q = i.E,
                 eY = e.pageY || e.clientY,
                 top = (i.reposition + eY - i.firstY)/i.h * 100;
@@ -119,7 +124,7 @@ var slimScroll = function(C, payload){
             if(i.rP1 < top) top = i.rP1;
             if(!i.previousTop) i.previousTop = top + 1;
             var blnThreshold = top >= 0 && i.firstY > i[oT];
-            if((i.previousTop > top && blnThreshold) || (blnThreshold && (i[w][sT] + i.h !== i.sH))){
+            if(i.previousTop > top && blnThreshold || blnThreshold && i[w][sT] + i.h !== i.sH){
                 i[s].style.top = top + U;
                 i.previousTop = top;
                 i[w][sT] = top * i.sH1;
@@ -127,7 +132,7 @@ var slimScroll = function(C, payload){
             addClass(i[S], q.S);
         },
         endScroll = function(e){
-            var e = e || event,q = i.E;
+            e = e || event,q = i.E;
 
             removeEvent('mousemove', document);
             removeEvent('mouseup', document);
@@ -136,7 +141,7 @@ var slimScroll = function(C, payload){
             addClass(i[S], q.S + q.a);
         },
         doScroll = function(e){
-            var e = e || event;
+            e = e || event;
             if(!i) return;
             var q = i.E;
             addClass(i[S], q.S);
@@ -177,15 +182,15 @@ var slimScroll = function(C, payload){
                     //creating a sheet
                     style = document.createElement('style'),
                     scrollBar = "[data-scrollbar]";
-                try{
+                try {
                     // WebKit hack :(
                     style.appendChild(document.createTextNode(""));
-                }catch(ex){}
+                } catch (ex) { return; }
 
                 var head =  document.head || document.getElementsByTagName('head')[0];
 
                 // adding above css to the sheet
-                head.insertBefore(style, (head.hasChildNodes())
+                head.insertBefore(style, head.hasChildNodes()
                                     ? head.childNodes[0]
                                     : null);
                 var sheet = style.sheet;
@@ -203,15 +208,12 @@ var slimScroll = function(C, payload){
         },
         removeSlimScroll = function(){
             C.removeAttribute(l);  //reset
-            if(_this.isSlimScrollInserted){
-                var insideContent = C.firstChild.innerHTML;
-                if(insideContent){
-                    C.innerHTML = insideContent;
-                }
+            if (_this.isSlimScrollInserted && C.children[0].classList[0] === "scroll-wrapper") {
+                let insideContent = C.children[0].innerHTML;
+                C.innerHTML = insideContent;
             }
             _this.isSlimScrollInserted = false;
             _this.initDone = false;
-
         },
         scrollBarVisible = function(x){
             if(!x) x = C;
@@ -255,7 +257,7 @@ var slimScroll = function(C, payload){
                 // addEvent('selectstart', i[S], function(){return;});
                 _this.initInProcess = false;
             }
-            else{
+            else {
                 removeSlimScroll();
                 return;     // don't do any further operations
             }
@@ -273,17 +275,16 @@ var slimScroll = function(C, payload){
                 i[w].focus();
             }
         };
-
-        _this.resetValues = function(){
-            if(Object.keys(i).length){
+        _this.resetValues = function () {
+            if (Object.keys(i).length) {
                 assignValues();
-                
+
                 placeIt();
             }
-            else{
+            else {
                 assignValues();
             }
-        }
+        };
         _this.init = init;
         init();
     return _this;
