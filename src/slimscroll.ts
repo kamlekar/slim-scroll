@@ -9,19 +9,22 @@ type Options = {
 };
 
 type Instance = {
-  wrapper?: HTMLElement;
-  scrollBarContainer?: HTMLElement;
-  scrollBar?: HTMLElement;
+  wrapper: HTMLElement;
+  scrollBarContainer: HTMLElement;
+  scrollBar: HTMLElement;
   scrollHeight?: number;
-  height?: number;
+  height: number;
   scrollInPercentage?: number;
   scrollInPercentageOne?: number;
   scrollBarHeight?: number;
   options?: Options;
-}
+  offsetTop?: number;
+  firstY?: number;
+  reposition?: number;
+};
 
 class SlimScroll {
-  instance: Instance = {};
+  instance: Instance;
   scrollContainer: HTMLElement;
   options: Options = {
     wrapperClass: '',
@@ -37,23 +40,28 @@ class SlimScroll {
   isSlimScrollInserted?: boolean;
   scrollElementMark: string = 'data-slimscroll';
   constructor(scrollContainer: HTMLElement, options: Options) {
-    this.scrollContainer = scrollContainer;
-    const {
-      wrapperClass = '',
-      scrollBarClass = '',
-      scrollBarContainerSpecialClass,
-      scrollBarMinHeight = 25,
-      scrollBarFixedHeight
-    } = options;
-    this.options = {
-      ...options,
-      wrapperClass,
-      scrollBarClass,
-      scrollBarContainerClass: `${scrollBarContainerSpecialClass? ' ' + scrollBarContainerSpecialClass: ''}`,
-      scrollBarContainerSpecialClass,
-      scrollBarMinHeight,
-      scrollBarFixedHeight
-    };
+    this.removeSlimScroll();
+    if(this.scrollBarVisible()){
+      this.scrollContainer = scrollContainer;
+      const {
+        wrapperClass = '',
+        scrollBarClass = '',
+        scrollBarContainerSpecialClass,
+        scrollBarMinHeight = 25,
+        scrollBarFixedHeight
+      } = options;
+      this.options = {
+        ...options,
+        wrapperClass,
+        scrollBarClass,
+        scrollBarContainerClass: `${scrollBarContainerSpecialClass? ' ' + scrollBarContainerSpecialClass: ''}`,
+        scrollBarContainerSpecialClass,
+        scrollBarMinHeight,
+        scrollBarFixedHeight
+      };
+
+      this.init();
+    }
   }
 
   // Initial function
@@ -66,13 +74,17 @@ class SlimScroll {
         this.insertCss();
         const options = this.options;
         const C = this.scrollContainer;
-        let i = this.instance;
-        var h = C.innerHTML, q = i.options = options;
-
+        var h = C.innerHTML;
+        
         C.innerHTML = "";
-        i.wrapper = this.createElement(q.wrapperClass, h, C);
-        i.scrollBarContainer = this.createElement(q.scrollBarContainerClass + q.scrollBarContainerSpecialClass, "", C);
-        i.scrollBar = this.createElement(q.scrollBarClass, "", i.scrollBarContainer);
+        const scrollBarContainer = this.createElement(options.scrollBarContainerClass + options.scrollBarContainerSpecialClass, "", C);
+        this.instance = {
+          wrapper: this.createElement(options.wrapperClass, h, C),
+          scrollBarContainer,
+          scrollBar: this.createElement(options.scrollBarClass, "", scrollBarContainer),
+          height: 0
+        };
+        let i: Instance = this.instance;
         this.setAttribute(i.scrollBar, 'data-scrollbar', '1');
         this.assignValues();
 
@@ -82,10 +94,10 @@ class SlimScroll {
             i.wrapper.focus();
         }
         // Attaching mouse events
-        this.addEvent('mousedown', i[s], beginScroll);
-        this.addEvent('click', i[S], setScroll);
+        this.addEvent('mousedown', i.scrollBar, this.beginScroll);
+        this.addEvent('click', i.scrollBarContainer, this.setScroll);
         // For scroll
-        this.addEvent('scroll', i[w], doScroll);
+        this.addEvent('scroll', i.wrapper, this.doScroll);
         // addEvent('selectstart', i[S], function(){return;});
         this.initInProcess = false;
     }
@@ -93,6 +105,64 @@ class SlimScroll {
         this.removeSlimScroll();
         return;     // don't do any further operations
     }
+  };
+
+  setScroll(e: MouseEvent) {
+    var e = e || window.event;
+    var el = (e.target || window.event?.srcElement) as HTMLElement;
+    var p = el.parentElement || el.parentNode;
+    var i = this.instance;
+    var q = i.options;
+
+    if(!i || p === i.scrollBarContainer) return;
+    var eY = e.pageY || (window.event as any)?.clientY,
+        top = ((eY - this.getTop(i[w][pE] || i[w][pN]))/i.h * 100) - i.sP1/2;
+    if(top > i.rP1) top = i.rP1;
+    else if(top < 0) top = 0;
+    i[s].style.top = top + U;
+    i[w][sT] = top * i.sH1;
+    addClass(i[S], q.S + q.a);
+  },
+
+  beginScroll(event: MouseEvent) {
+    this.clearSelection();
+    var i = this.instance;
+    var e = event || window.event,
+        el = event.currentTarget || event.srcElement;
+
+    this.addEvent('mousemove', document as any, this.moveScroll);
+    this.addEvent('mouseup', document as any, this.endScroll);
+
+    i.offsetTop = this.getTop(i.wrapper);
+    i.firstY = e.pageY || event.clientY;
+    if(!i.reposition) i.reposition = this.getReposition(i.scrollBar, i.height);
+    // Disable text selection while dragging the scrollbar
+    return false;
+  };
+  
+  getTop = function(element: HTMLElement){
+    var t = document.documentElement.scrollTop;
+    return element.getBoundingClientRect().top + (t?t:document.body.scrollTop);
+  };
+
+  clearSelection() {
+    // removing selected text
+    // Link: http://stackoverflow.com/a/3171348
+    var sel = window.getSelection ? window.getSelection() : (document as any).selection;
+    if (sel) {
+        if (sel.removeAllRanges) sel.removeAllRanges();
+        else if (sel.empty) sel.empty();
+    }
+  };
+
+  getReposition = function(element: HTMLElement, height: number){
+    var x = parseInt(element.style.top.replace(U,""),10) * height/100;
+    return x?x:0;
+  };
+  
+  addEvent = function(eventName: string, element: HTMLElement, callback: Function){
+    element['on' + eventName] = callback;
+    // el.addEventListener(e, func, false);
   };
 
   createElement(c: string, h: string, p: HTMLElement) {
@@ -194,7 +264,8 @@ class SlimScroll {
             this.addCSSRule(sheet, scrollBar, s, 0);
         }
         else{
-            style.styleSheet = `
+            // For old browsers
+            (style as any).styleSheet = `
               ${slim} > div {
                 ${w}
               }
@@ -223,8 +294,8 @@ class SlimScroll {
           this.init();       // Initialize again
       }
 
-      if(!scrollBarVisible(i[w])){
-          removeSlimScroll();
+      if(!this.scrollBarVisible(obj.wrapper)){
+          this.removeSlimScroll();
           return;
       }
     }
