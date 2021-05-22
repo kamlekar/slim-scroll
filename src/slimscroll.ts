@@ -9,27 +9,51 @@ type Options = {
 };
 
 type Instance = {
-  wrraper?: HTMLElement;
+  wrapper?: HTMLElement;
   scrollBarContainer?: HTMLElement;
+  scrollBar?: HTMLElement;
   scrollHeight?: number;
   height?: number;
   scrollInPercentage?: number;
   scrollInPercentageOne?: number;
   scrollBarHeight?: number;
-
+  options?: Options;
 }
 
 class SlimScroll {
   instance: Instance = {};
   scrollContainer: HTMLElement;
-  options: Options;
+  options: Options = {
+    wrapperClass: '',
+    scrollBarClass: '',
+    scrollBarContainerClass: '',
+    scrollBarContainerSpecialClass: '',
+    scrollBarMinHeight: 25,
+    scrollBarFixedHeight: 0,
+    keepFocus: false
+  };
   initDone?: boolean;
   initInProcess?: boolean;
   isSlimScrollInserted?: boolean;
   scrollElementMark: string = 'data-slimscroll';
   constructor(scrollContainer: HTMLElement, options: Options) {
     this.scrollContainer = scrollContainer;
-    this.options = options;
+    const {
+      wrapperClass = '',
+      scrollBarClass = '',
+      scrollBarContainerSpecialClass,
+      scrollBarMinHeight = 25,
+      scrollBarFixedHeight
+    } = options;
+    this.options = {
+      ...options,
+      wrapperClass,
+      scrollBarClass,
+      scrollBarContainerClass: `${scrollBarContainerSpecialClass? ' ' + scrollBarContainerSpecialClass: ''}`,
+      scrollBarContainerSpecialClass,
+      scrollBarMinHeight,
+      scrollBarFixedHeight
+    };
   }
 
   // Initial function
@@ -39,61 +63,158 @@ class SlimScroll {
         this.initDone = true;
         this.initInProcess = true;
         this.setAttribute(this.scrollContainer, this.scrollElementMark, '1');
-        insertCss();
+        this.insertCss();
         const options = this.options;
-        var h = C[iH], q = i.E = {};
-        // setting user defined classes
-        q.w = options.wrapperClass || "";
-        q.s = options.scrollBarClass || "";
-        q.S = options.scrollBarContainerClass || "";
-        q.a = options.scrollBarContainerSpecialClass ? " " + options.scrollBarContainerSpecialClass : "";
-        q.mH = options.scrollBarMinHeight || 25;
-        q.sH = options.scrollBarFixedHeight;  // could be undefined
+        const C = this.scrollContainer;
+        let i = this.instance;
+        var h = C.innerHTML, q = i.options = options;
 
-        C[iH] = "";
-        i[w] = cE(q.w, h, C);
-        i[S] = cE(q.S + q.a, "", C);
-        i[s] = cE(q.s, "", i[S]);
-        setAttr(i[s], 'data-scrollbar', '1');
-        assignValues();
+        C.innerHTML = "";
+        i.wrapper = this.createElement(q.wrapperClass, h, C);
+        i.scrollBarContainer = this.createElement(q.scrollBarContainerClass + q.scrollBarContainerSpecialClass, "", C);
+        i.scrollBar = this.createElement(q.scrollBarClass, "", i.scrollBarContainer);
+        this.setAttribute(i.scrollBar, 'data-scrollbar', '1');
+        this.assignValues();
 
-        placeIt();
-        if(payload.keepFocus){
-            setAttr(i[w], 'tabindex', '-1');
-            i[w].focus();
+        this.placeIt(i.wrapper);
+        if(options.keepFocus){
+            this.setAttribute(i.wrapper, 'tabindex', '-1');
+            i.wrapper.focus();
         }
         // Attaching mouse events
-        addEvent('mousedown', i[s], beginScroll);
-        addEvent('click', i[S], setScroll);
+        this.addEvent('mousedown', i[s], beginScroll);
+        this.addEvent('click', i[S], setScroll);
         // For scroll
-        addEvent('scroll', i[w], doScroll);
+        this.addEvent('scroll', i[w], doScroll);
         // addEvent('selectstart', i[S], function(){return;});
         this.initInProcess = false;
     }
     else{
-        removeSlimScroll();
+        this.removeSlimScroll();
         return;     // don't do any further operations
     }
-  },
+  };
+
+  createElement(c: string, h: string, p: HTMLElement) {
+    var d = document.createElement('div');
+    this.addClass(d, c);
+    d.innerHTML = h;
+    p.appendChild(d);
+    return d;
+  };
 
   scrollBarVisible(x?: HTMLElement) {
     if(!x) x = this.scrollContainer;
     return x.offsetHeight < x.scrollHeight;
-  },
+  };
 
   removeSlimScroll() {
     const C = this.scrollContainer;
     C.removeAttribute(this.scrollElementMark);  //reset
     if(this.isSlimScrollInserted){
-        var insideContent = C.firstChild.innerHTML;
+        var insideContent = (C.firstChild as HTMLElement)?.innerHTML || '';
         if(insideContent){
             C.innerHTML = insideContent;
         }
     }
     this.isSlimScrollInserted = false;
     this.initDone = false;
+  };
 
-  },
+  placeIt(wrapperElement: HTMLElement) {
+    // Show the default scrollbar to get the scrollbar width
+    const i = this.instance;
+    wrapperElement.style.overflow = "";
+    var scrollBarWidth = wrapperElement.offsetWidth - wrapperElement.clientWidth;
+    // Stretching the inner container so that the default scrollbar is completely invisible
+    wrapperElement.style.right = -scrollBarWidth + "px";
+    this.isSlimScrollInserted = true;
+    if(this.options.keepFocus){
+        this.setAttribute(wrapperElement, 'tabindex', '-1');
+        wrapperElement.focus();
+    }
+  };
+
+  insertCss() {
+    if(!window.slimScrollStylesApplied){
+        if(this.isSlimScrollInserted){
+            this.initInProcess = false;
+            return;
+        }
+        // Inserting css rules
+        // Link: http://davidwalsh.name/add-rules-stylesheets
+        var slim = `[${this.scrollElementMark}]`,
+            imp = " !important",
+            pA = `position:absolute${imp}`,
+            // classes
+            w = `
+              ${pA};
+              left: 0px;
+              right:0px;
+              top:0px${imp};
+              bottom:0px${imp};
+              overflow: auto${imp};
+              padding-right:8px${imp};
+            `,
+            S = `
+              ${pA};
+              right:0px;
+              left:auto;
+              width:5px;
+              top:0px${imp};
+              bottom:0px${imp};
+              cursor:pointer${imp};
+              padding-right:0px${imp};
+            `,
+            s = `
+              ${pA};
+              background-color:#999;
+              top:0px;
+              left:0px;
+              right:0px;
+            `,
+            //creating a sheet
+            style = document.createElement('style'),
+            scrollBar = "[data-scrollbar]";
+        try{
+            // WebKit hack :(
+            style.appendChild(document.createTextNode(""));
+        }catch(ex){}
+
+        var head =  document.head || document.getElementsByTagName('head')[0];
+
+        // adding above css to the sheet
+        head.insertBefore(style, (head.hasChildNodes())
+                            ? head.childNodes[0]
+                            : null);
+        var sheet = style.sheet;
+        if(sheet){
+            this.addCSSRule(sheet, slim+">div", w, 0);
+            this.addCSSRule(sheet, slim+">div+div", S, 0);
+            this.addCSSRule(sheet, scrollBar, s, 0);
+        }
+        else{
+            style.styleSheet = `
+              ${slim} > div {
+                ${w}
+              }
+              ${slim} > div + div {
+                ${S}
+              }
+              ${slim} > div + div > div {
+                ${s}
+              }
+            `;
+        }
+        this.isSlimScrollInserted = true;
+        window.slimScrollStylesApplied = true;
+    }
+  };
+
+  addCSSRule = function(S: CSSStyleSheet, s: string, r: string, i: number) {
+    if(S.insertRule) S.insertRule(s + "{" + r + "}", i);
+    else if(S.addRule) S.addRule(s, r, i);
+  };
 
   assignValues() {
     const obj = this.instance;
